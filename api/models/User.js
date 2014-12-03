@@ -8,20 +8,42 @@
 module.exports = {
 
   attributes: {
-  	name: { type: 'string', required: true},
-  	email: {
-            type: 'string',
-            required: true,
-            unique: true
-        },
+    name: {
+      type : 'string',
+      required: true
+      },
+
+    phone: {
+      type : 'string',
+      required: true,
+      unique: true
+      },
+
+    email: {
+      type : 'string',
+      required: true
+      },
+
     gender: {
-            type: 'boolean',
-            required: true
-        },
-    fb_id: { type: 'integer'},
-    fb: { type: 'text'},
-    gg_id: { type: 'integer'},
-    gg: { type: 'text'}
+      type : 'boolean',
+      required: true
+      },
+
+    fb_id: {
+      type : 'string'
+      },
+
+    fb: {
+      type : 'json'
+      },
+
+    gg_id: {
+      type : 'string'
+      },
+
+    gg: {
+      type : 'json'
+      }
   }
 };
 

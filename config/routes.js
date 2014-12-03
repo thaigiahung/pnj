@@ -34,6 +34,11 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
+  },
+
+  '/user/create' : {
+    controller: 'user',
+    action: 'create'
   }
 
   /***************************************************************************
