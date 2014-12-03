@@ -36,7 +36,7 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  '/user/create' : {
+  'POST /user/create' : {
     controller: 'user',
     action: 'create'
   },
@@ -51,16 +51,20 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/gift_code/issue': {
+  'POST /gift_code/issue': {
     controller: 'GiftCodeController',
     action: 'issue'
   },
-  '/gift_code/generate': {
+  'POST /gift_code/generate': {
     controller: 'GiftCodeController',
     action: 'generatecode'
   },
-  '/gift_code/active': {
+  'POST /gift_code/active': {
     controller: 'GiftCodeController',
     action: 'active'
-  }
+  },
+  'POST /user/get/all': {
+    model: 'user', 
+    blueprint: 'find'
+  },
 };
