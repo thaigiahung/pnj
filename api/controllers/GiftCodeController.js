@@ -85,6 +85,8 @@ module.exports = {
 	  				}
 	  				else
 	  				{
+	  					console.log(code.id);
+	  					console.log(mUser.id);
 	  					//Set user_id và source cho Gift Code
 	  					GiftCode.update({id:code.id},{user:mUser.id, status:1, source:1}).exec(function(err,updatedCode){
 				  			if(err)
@@ -115,6 +117,64 @@ module.exports = {
 			    });  
 		    });   
   		}
-	}	
+	},	
+
+	active: function(req,res) {
+		var code = req.param('code');
+		if (!code) {
+			res.json(
+			 	{
+			 		"message": "Missing Parameter",
+			 		"status": 0
+			 	}
+		 	);
+	     	res.status(400);
+  		}
+		else
+		{
+			GiftCode.findOne({code : code}).exec(function (err, giftcode){
+				if(typeof giftcode == "undefined" || err)
+				{
+					res.json(
+					 	{
+					 		"message": "Invalid Gift Code!",
+					 		"status": 0
+					 	}
+				 	);
+				 	res.status(400);
+				}
+				else if(giftcode.status == 0)
+				{
+						res.json(
+						 	{
+						 		"message": "Invalid Gift Code!",
+						 		"status": 0
+						 	}
+					 	);
+					 	res.status(400);
+				}
+				else if(giftcode.status == 2)
+				{
+						res.json(
+						 	{
+						 		"message": "Gift Code has already been activated!",
+						 		"status": 0
+						 	}
+					 	);
+					 	res.status(400);
+				}
+				else {
+					//trả status 0 và message là "Gift code has already been activated"
+					GiftCode.update({code : code},{status : 2}).exec(function (err2, giftcode2){
+						res.json(
+					 	{
+					 		"message": "Success",
+					 		"status": 1
+					 	})				
+					})
+				}
+			});
+		}		
+	}
 };
 
