@@ -9,8 +9,7 @@ module.exports = {
 
   attributes: {
     name: {
-      type : 'string',
-      required: true
+      type : 'string'
       },
 
     phone: {
@@ -20,13 +19,11 @@ module.exports = {
       },
 
     email: {
-      type : 'string',
-      required: true
+      type : 'string'
       },
 
     gender: {
-      type : 'boolean',
-      required: true
+      type : 'boolean'
       },
 
     fb_id: {
