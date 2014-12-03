@@ -34,7 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -46,4 +46,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  '/gift_code/issue': {
+    controller: 'GiftCodeController',
+    action: 'issue'
+  },
 };
