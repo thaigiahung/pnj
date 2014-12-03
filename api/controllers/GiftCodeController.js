@@ -38,7 +38,7 @@ module.exports = {
 		if (!phone) {
 			res.json(
 			 	{
-			 		"message": "Missing Parameter(s)",
+			 		"message": "Missing Parameter",
 			 		"status": 0
 			 	}
 			 	);
@@ -46,31 +46,48 @@ module.exports = {
   		}
   		else
   		{
-			User.findOne({phone:phone}).exec(function(err, matchUser){
+			User.findOne({phone:phone}).exec(function(err, matchUser){				
 		        var mUser;
 		        if(typeof matchUser == "undefined" || matchUser.length == 0) //Chưa có user này => tạo
 		    	{
-		  			var createdUser = User.create({phone : phone}).exec(function(err,createdUser){
-						  				if(err) {
-						  					//Handle Error
-						  					res.json(
-											 	{
-											 		"message": "Cannot create user!",
-											 		"status": 0
-											 	}
-										 	);
-									     	res.status(400);
-						  				}
-						  				else {
-						  					return createdUser;
-						  				}
-						  			});		
+		    		console.log("if");
+		  			User.create({phone : phone}).exec(function(err,createdUser){
+		  				if(err) {
+		  					//Handle Error
+		  					res.json(
+							 	{
+							 		"message": "Cannot create user!",
+							 		"status": 0
+							 	}
+						 	);
+					     	res.status(400);
+		  				}
+		  			});	
+
+	  				//Mồi cho nó chạy đoạn trên, nếu ko có thì nó sẽ chạy ngầm => chưa kịp insert vào DB nền sẽ bị lỗi code phía dưới
+		  			var createdUser = User.findOne({phone:phone}).exec(function(err, matchUser2){
+		  				if(err) {
+		  					//Handle Error
+		  					res.json(
+							 	{
+							 		"message": "Cannot create user!",
+							 		"status": 0
+							 	}
+						 	);
+					     	res.status(400);
+		  				}
+		  				else
+		  				{
+		  					return matchUser2;
+		  				}
+		  			});	
 		  			mUser = createdUser;  			
 		    	}
 		    	else
 		    	{
 		    		mUser = matchUser;
 		    	}
+		    	
 				//Lấy 1 Gift Code
 				GiftCode.findOne({status: 0}).exec(function(err, code){
 		            if(err) {
@@ -85,10 +102,8 @@ module.exports = {
 	  				}
 	  				else
 	  				{
-	  					console.log(code.id);
-	  					console.log(mUser.id);
 	  					//Set user_id và source cho Gift Code
-	  					GiftCode.update({id:code.id},{user:mUser.id, status:1, source:1}).exec(function(err,updatedCode){
+	  					GiftCode.update({id:code.id},{status:1, source:1}).exec(function(err,updatedCode){
 				  			if(err)
 				  			{
 				  				res.json(
@@ -104,7 +119,7 @@ module.exports = {
 		  						// Send SMS
 		  				        var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
 		  					       
-				  				SMSService.sendSMS(mUser.phone, sms, 1);
+				  				SMSService.sendSMS(phone, sms, 1);
 				  				res.json(
 								 	{
 								 		"message": "Success",
