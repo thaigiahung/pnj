@@ -90,6 +90,29 @@ module.exports = {
 
         // SMSService.sendSMS(phone, sms, "a");
         // res.send("data");
+	},
+
+	active: function(req,res) {
+		var code = req.param('code');
+		GiftCode.findOne({code : code, status : 1}).exec(function (err, giftcode){
+			if(giftcode) {
+				//trả status 0 và message là "Gift code has already been activated"
+				GiftCode.update({code : code},{status : 2}).exec(function (err2, giftcode2){
+					res.json(
+				 	{
+				 		"message": "Success",
+				 		"status": 1
+				 	})				
+				})
+			}
+			else {
+				res.json(
+			 	{
+			 		"message": "Invalid Gift Code!",
+			 		"status": 0
+			 	})
+			}
+		});
 	}
 };
 

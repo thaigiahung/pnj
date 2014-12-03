@@ -34,13 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  },
-
-  '/user/create' : {
-    controller: 'user',
-    action: 'create'
-  },
-
+  }
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -51,8 +45,4 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/gift_code/issue': {
-    controller: 'GiftCodeController',
-    action: 'issue'
-  }
 };
