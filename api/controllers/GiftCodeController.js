@@ -46,8 +46,7 @@ module.exports = {
   		}
   		else
   		{
-			Customer.findOne({phone:phone}).exec(function(err, matchUser){				
-		        var mUser;
+			Customer.findOne({phone:phone}).exec(function(err, matchUser){
 		        if(typeof matchUser == "undefined" || matchUser.length == 0) //Chưa có user này => tạo
 		    	{
 		  			Customer.create({phone : phone}).exec(function(err,createdUser){
@@ -61,74 +60,60 @@ module.exports = {
 						 	);
 					     	res.status(400);
 		  				}
-		  			});	
-
-	  				//Mồi cho nó chạy đoạn trên, nếu ko có thì nó sẽ chạy ngầm => chưa kịp insert vào DB nền sẽ bị lỗi code phía dưới
-		  			var createdUser = Customer.findOne({phone:phone}).exec(function(err, matchUser2){
-		  				if(err) {
-		  					//Handle Error
-		  					res.json(
-							 	{
-							 		"message": "Cannot create user!",
-							 		"status": 0
-							 	}
-						 	);
-					     	res.status(400);
-		  				}
 		  				else
 		  				{
-		  					return matchUser2;
+							//Lấy 1 Gift Code
+							GiftCode.findOne({status: 0}).exec(function(err, code){
+					            if(err) {
+				  					//Handle Error
+				  					res.json(
+									 	{
+									 		"message": "Cannot get Gift Code!",
+									 		"status": 0
+									 	}
+								 	);
+							     	res.status(400);
+				  				}
+				  				else
+				  				{
+				  					//Set user_id và source cho Gift Code
+				  					GiftCode.update({id:code.id},{customer: createdUser.id, status:1, source:1}).exec(function(err,updatedCode){
+							  			if(err)
+							  			{
+							  				res.json(
+											 	{
+											 		"message": "Cannot update Gift Code!",
+											 		"status": 0
+											 	}
+										 	);
+									     	res.status(400);
+							  			}
+							  			else
+							  			{
+					  						// Send SMS
+					  				        var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
+					  					       
+							  				SMSService.sendSMS(phone, sms, 1);
+							  				res.json(
+											 	{
+											 		"message": "Success",
+											 		"status": 1
+											 	}
+										 	);
+							  			}
+				  					});		  			
+				  				}
+						    });  
 		  				}
 		  			});	
-		  			mUser = createdUser;  			
 		    	}
 		    	else
 		    	{
-		    		mUser = matchUser;
+		    		res.json({
+		    		  "message": "Phone number already exists",
+		    		  "status": 0
+		    		});
 		    	}
-		    	
-				//Lấy 1 Gift Code
-				GiftCode.findOne({status: 0}).exec(function(err, code){
-		            if(err) {
-	  					//Handle Error
-	  					res.json(
-						 	{
-						 		"message": "Cannot get Gift Code!",
-						 		"status": 0
-						 	}
-					 	);
-				     	res.status(400);
-	  				}
-	  				else
-	  				{
-	  					//Set user_id và source cho Gift Code
-	  					GiftCode.update({id:code.id},{status:1, source:1}).exec(function(err,updatedCode){
-				  			if(err)
-				  			{
-				  				res.json(
-								 	{
-								 		"message": "Cannot update Gift Code!",
-								 		"status": 0
-								 	}
-							 	);
-						     	res.status(400);
-				  			}
-				  			else
-				  			{
-		  						// Send SMS
-		  				        var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
-		  					       
-				  				SMSService.sendSMS(phone, sms, 1);
-				  				res.json(
-								 	{
-								 		"message": "Success",
-								 		"status": 1
-								 	}
-							 	);
-				  			}
-	  					});		  			
-	  				}
-			    });  
 		    });   
   		}
 	},	
