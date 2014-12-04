@@ -50,7 +50,6 @@ module.exports = {
 		        var mUser;
 		        if(typeof matchUser == "undefined" || matchUser.length == 0) //Chưa có user này => tạo
 		    	{
-		    		console.log("if");
 		  			User.create({phone : phone}).exec(function(err,createdUser){
 		  				if(err) {
 		  					//Handle Error
