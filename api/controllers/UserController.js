@@ -29,36 +29,44 @@ module.exports = {
 	     	res.status(400);
   		}
   		else {
-  			User.create({
-  				name : name,
-  				phone : phone,
-  				gender : gender,
-  				email : email
-  			}).exec(function(err,created){
-  				if(err) {
-  					//Handle Error
-  				}
-  				else {
-  					if(fb) {
-  						User.update({phone:phone},{fb:fb}).exec(function(err,updated){});
-  					}
-  					if(fb_id) {
-  						User.update({phone:phone},{fb_id:fb_id}).exec(function(err,updated){});
-  					}
-  					if(gg) {
-  						User.update({phone:phone},{gg:gg}).exec(function(err,updated){});
-  					}
-  					if(gg_id) {
-  						User.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
-  					}
-  				}
-  			});
-  			res.json(
-			 	{
-			 		"message": "Success",
-			 		"status": 1
-			 	}
-			 	);
+        User.findOne({phone : phone}).exec(function (err, user){
+            if(user) {
+              res.json({
+                "message": "Phone number already exists",
+                "status": 0
+              })
+            }
+            else {
+              User.create({
+                name : name,
+                phone : phone,
+                gender : gender,
+                email : email
+              }).exec(function(err,created){
+                if(err) {
+                  //Handle Error
+                }
+                else {
+                  if(fb) {
+                    User.update({phone:phone},{fb:fb}).exec(function(err,updated){});
+                  }
+                  if(fb_id) {
+                    User.update({phone:phone},{fb_id:fb_id}).exec(function(err,updated){});
+                  }
+                  if(gg) {
+                    User.update({phone:phone},{gg:gg}).exec(function(err,updated){});
+                  }
+                  if(gg_id) {
+                    User.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
+                  }
+                }
+              });
+              res.json({
+                "message": "Success",
+                "status": 1
+              });
+            }
+          });
   		}
 	}
 };
