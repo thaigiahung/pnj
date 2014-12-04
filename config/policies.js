@@ -22,10 +22,10 @@ module.exports.policies = {
     CouponController: 'oauthBearer',
     SaleController:  'oauthBearer',
     InfoController: 'oauthBearer',
-    CustomerController: 'oauthBearer',
     GiftCodeController: 'oauthBearer',
     Customer: {
         '*': false,
+        'create': 'oauthBearer',
         'find': 'oauthBearer'
     }
 

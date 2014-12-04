@@ -17,17 +17,17 @@ module.exports.bootstrap = function(cb) {
   User.findOne({email: 'me@gmail.com'}, function(err, user){
     if(!user){
       User.create({
-    email: 'me@gmail.com',
-    password: 'password',
+    email: 'pnj',
+    password: 'kA3T3gr9UhGbvFFX',
       }).exec(function(err,user){
         console.log("Default user created");
-        console.log("- username: " + user.email);
-        console.log("- password: password");
+        console.log("- username: pnj");
+        console.log("- password: kA3T3gr9UhGbvFFX");
       });
     } else {
       console.log('Default user already exists');
-      console.log("- username: " + user.email);
-      console.log("- password: password");
+      console.log("- username: pnj");
+      console.log("- password: kA3T3gr9UhGbvFFX");
     }
   });
 
