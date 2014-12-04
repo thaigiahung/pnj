@@ -15,9 +15,8 @@ create: function(req, res){
   var fb = req.param('fb');
   var gg_id = req.param('gg_id');
   var gg = req.param('gg');
-  var source = req.param('source');
+  var utm = req.param('utm_source');
   var send_sms = req.param('send_sms');
-
 
   if (!name || !phone || !gender || !email) {
     res.json(
@@ -58,6 +57,58 @@ create: function(req, res){
                  }
                  if(gg_id) {
                    Customer.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
+                 }
+                 if(send_sms === "true")
+                 {
+                    Source.findOne({utm : utm}).exec(function (err, matchedSource){
+                      var source_id;
+                      if(err || matchedSource.length == 0) 
+                        source_id = 2;
+                      else
+                        source_id = matchedSource.id;
+                      //Lấy 1 Gift Code
+                      GiftCode.findOne({status: 0}).exec(function(err, code){
+                              if(err) {
+                            //Handle Error
+                            res.json(
+                            {
+                              "message": "Cannot get Gift Code!",
+                              "status": 0
+                            }
+                          );
+                            res.status(400);
+                          }
+                          else
+                          {
+                            //Set user_id và source cho Gift Code
+                            GiftCode.update({id:code.id},{customer: created.id, status:1, source:source_id}).exec(function(err,updatedCode){
+                              if(err)
+                              {
+                                res.json(
+                                {
+                                  "message": "Cannot update Gift Code!",
+                                  "status": 0
+                                }
+                              );
+                                res.status(400);
+                              }
+                              else
+                              {
+                                // Send SMS
+                                    var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
+                                     
+                                // SMSService.sendSMS(created.phone, sms, source_id);
+                                res.json(
+                                {
+                                  "message": "Success",
+                                  "status": 1
+                                }
+                              );
+                              }
+                            });           
+                          }
+                        });
+                    });
                  }
                }
              });
