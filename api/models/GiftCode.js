@@ -13,7 +13,7 @@ module.exports = {
   		required: true, 
   		unique: true
   	},
-  	user: { model: 'user' },
+  	customer: { model: 'customer' },
   	status: { type: 'integer', defaultsTo: 0},
   	source: { model: 'source' }
   }

@@ -46,11 +46,11 @@ module.exports = {
   		}
   		else
   		{
-			User.findOne({phone:phone}).exec(function(err, matchUser){				
+			Customer.findOne({phone:phone}).exec(function(err, matchUser){				
 		        var mUser;
 		        if(typeof matchUser == "undefined" || matchUser.length == 0) //Chưa có user này => tạo
 		    	{
-		  			User.create({phone : phone}).exec(function(err,createdUser){
+		  			Customer.create({phone : phone}).exec(function(err,createdUser){
 		  				if(err) {
 		  					//Handle Error
 		  					res.json(
@@ -64,7 +64,7 @@ module.exports = {
 		  			});	
 
 	  				//Mồi cho nó chạy đoạn trên, nếu ko có thì nó sẽ chạy ngầm => chưa kịp insert vào DB nền sẽ bị lỗi code phía dưới
-		  			var createdUser = User.findOne({phone:phone}).exec(function(err, matchUser2){
+		  			var createdUser = Customer.findOne({phone:phone}).exec(function(err, matchUser2){
 		  				if(err) {
 		  					//Handle Error
 		  					res.json(
