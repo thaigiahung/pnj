@@ -97,7 +97,7 @@ create: function(req, res){
                                 // Send SMS
                                     var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
                                      
-                                // SMSService.sendSMS(created.phone, sms, source_id);
+                                SMSService.sendSMS(created.phone, sms, source_id);
                                 res.json(
                                 {
                                   "message": "Success",
