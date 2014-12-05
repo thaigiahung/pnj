@@ -1,7 +1,7 @@
 module.exports = {
-  appName: 'N~ Coffee',
+  appName: 'PNJ',
   port: 1337,
   oauth: {
-    tokenLife: 3600
+    tokenLife: 86400
   }
 };
