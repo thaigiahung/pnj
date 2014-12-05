@@ -17,12 +17,26 @@ module.exports.policies = {
   // Default policy for all controllers and actions (`true` allows public access)
     '*': true,
 
-    ProductController: 'oauthBearer',
-    CustomerController: 'oauthBearer',
-    CouponController: 'oauthBearer',
-    SaleController:  'oauthBearer',
-    InfoController: 'oauthBearer',
-    GiftCodeController: 'oauthBearer',
+    ProductController: 'oauthBearer', 
+    CustomerController: 'oauthBearer', 
+    CouponController: 'oauthBearer', 
+    SaleController:  'oauthBearer', 
+    InfoController: 'oauthBearer', 
+    User: {
+        '*': false
+    },
+    GiftCode: {
+        '*': false,
+        'generatecode' : 'oauthBearer',
+        'issue' : 'oauthBearer',
+        'active' : 'oauthBearer'
+    },
+    Source: {
+        '*': false
+    },
+    Client: {
+        '*': false
+    },
     Customer: {
         '*': false,
         'create': 'oauthBearer',

@@ -51,8 +51,5 @@ module.exports.routes = {
     controller: 'GiftCodeController',
     action: 'active'
   },
-  'POST /user/get/all': {
-    model: 'customer', 
-    blueprint: 'find'
-  }
+  'POST /user/get/all': 'Customer.find'
 }
