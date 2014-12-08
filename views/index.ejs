@@ -1,23 +1,374 @@
 <!-- Default home page -->
 <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,700italic,400,300,700' rel='stylesheet'/> -->
-<link href='http://sailsjs.org/styles/fonts.css' rel='stylesheet'/>
-<style>
-    /* Styles included inline since you'll probably be deleting this page anyway */
-    html,body{text-align:left;font-size:1em}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6{font-weight:normal}div.clear{clear:both}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}body{font-family:"Open Sans",Arial,sans-serif;font-weight:300;font-size:15px}h1{color:#0c8da0;font-size:2em;font-weight:300}h2{font-size:1.5em;font-weight:300;margin-top:4%}h3{font-size:1.25em;font-weight:300;font-style:italic;margin-bottom:5px}h4{color:#0c8da0;font-weight:300;font-size:1.5em}span{font-weight:700}ul{margin-top:5%;margin-bottom:5%}a{text-decoration:none;color:inherit}p{margin-bottom:7px;font-size:.9em}.container{max-width:997px;margin:0 auto;padding:0 4%}.sprite{font-weight:normal;background:url(http://sailsjs.org/images/newapp.sprite.png) no-repeat}.top-bar{position:relative;padding-top:10px;background-color:#001c20;height:55px}.main{float:left;max-width:610px;height:555px;margin-top:50px}.steps{height:250px}.getting-started p{ margin-bottom: 30px; line-height: 26px; }.getting-started div{float:left;width:540px}.getting-started li{clear:both;height:60px;margin-top:20px;margin-bottom:20px}.getting-started .sprite{margin-left:10px;padding-left:60px;height:42px;width:0}.getting-started .one{background-position:0 0}.getting-started .two{background-position:0 -42px}.getting-started .three{background-position:0 -83px}.delete{margin-top:5%;height:52px;background:#e3f0f1;border:1px solid #118798;color:#118798;clear:both}.delete .sprite{margin-top:10px;margin-bottom:10px;margin-left:9%;padding-left:42px;padding-top:7px;height:25px;background-position:0 -126px}.delete a{color:#0c8da0;font-weight:bold;padding-left:1%}.side-bar{max-width:327px;height:555px;float:left;border-left:1px solid #0c8da0;margin-left:25px;margin-top:50px;padding-left:25px}.side-bar ul{margin-bottom:10%}.side-bar ul li{margin-top:5px;margin-bottom:.25em}.side-bar ul li a{margin-bottom:.25em}.side-bar .sprite{padding-left:25px}.side-bar .single_page{background-position:0 -199px}.side-bar .traditional{background-position:0 -219px}.side-bar .realtime{background-position:0 -179px}.side-bar .api{background-position:0 -158px}.boxy{font-family:Courier,"Courier New",sans-serif;background-color:#e4edec;border:1px solid #d0d6d6;padding-left:5px;padding-right:5px;padding-top:2px;padding-bottom:2px;font-weight:100}.sixteen{margin-right:10px}.nineteen{margin-right:7px}
-</style>
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="css/fontello.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript">
+    function removeCookie(name) {
+        document.cookie = encodeURI(name) + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.infory.vn;path=/';
+    }
+    function setCookie(cname, cvalue, exdays) {
+        var expires = "";
+        if(exdays !== 0)
+        {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            expires = ";expires=" + d.toGMTString();
+        }
+
+        document.cookie = encodeURI(cname) + "=" + encodeURI(cvalue) + expires + ";domain=.infory.vn;path=/";
+    }
+    function getCookie(cname) {
+        var name = encodeURI(cname) + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name) == 0) return decodeURI(c.substring(name.length, c.length));
+        }
+
+        return undefined;
+    }
+    function storeParams(){
+        var query = decodeURI(window.location.search.substring(1));
+        if(query.length == 0)
+            return;
+        var vars = query.split("&");
+        for(var i=0; i<vars.length; i++){
+            var pair = vars[i].split('="');
+            if(pair.length > 1)
+                setCookie(pair[0], pair[1].substring(0, pair[1].length-1), 1);
+            else {
+                pair = vars[i].split('=');
+                setCookie(pair[0], pair[1], 1);
+            }
+        }
+        window.location.replace(window.location.href.substring(0, window.location.href.indexOf("?")-1));
+    }
+
+    storeParams();
+    var redirect_url = getCookie('redirect_url');
+    if(redirect_url === undefined)
+        redirect_url = "http://infory.vn";
+    if(getCookie('user_id') !== undefined)
+        window.location.replace(redirect_url);
+</script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
 <!--[if IE 7]>
     <style>
     .getting-started li{overflow:visible;clear:both}.delete{width:690px}
     </style>
 <![endif]-->
 
-<div class="top-bar">
-	<div class="container clearfix">
-		<img class="logo" src="http://sailsjs.org/images/sails-logo.jpg" />
-	</div>
-</div>
-<div class="container clearfix">
-	<div class="main">
-          Sails application to show how to protect API with OAuth2
-	</div>
-</div>
+    <div class="main">
+        <div id="step1">
+            <div align="center" id="formMessage">
+                <h1 class="header">Cơ hội trúng thưởng tại ITE 2014</h1>
+                <h2 style="padding-bottom: 0px;">Cùng Du lịch & giải trí - đi du lịch miễn phí!</h2>
+                <h2>ĐĂNG KÝ THAM GIA CHƯƠNG TRÌNH</h2>
+            </div>
+            <div align="center" id="validateBlock"><h2 id="validateMessage" style="color: red;"></h2></div>
+            <div class="lable-2">
+                <label>Họ và Tên</label>
+                <input id="fullname" type="text" class="text" placeholder="Please enter your fullname">
+            </div>
+            <div class="lable">
+               <div class="col_1_of_2 span_1_of_2">
+                   <label>Ngày sinh</label>
+                   <input id="dob" type="date" class="text" onblur="DOB = this.value">
+               </div>
+               <div class="col_1_of_2 span_1_of_2">
+                   <label>Giới tính</label>
+                   <div>
+                        <div class="col_1_of_2 span_1_of_2">
+                           <div id="maleButton" onclick="updateGender(1);" class="button"><i class="icon-male"></i>Nam</div>
+                        </div>
+                        <div class="col_1_of_2 span_1_of_2">
+                            <div id="femaleButton" onclick="updateGender(0);" class="button"><i class="icon-female"></i>Nữ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <h2>Hoặc đăng ký nhanh với:</h2>
+            <div id="socialConnectBlock" class="social-icons">
+                <div class="col_1_of_f span_1_of_f">
+                    <a href="#" onclick="connectFacebook();">
+                        <ul class='facebook'>
+                            <i class="fb"> </i>
+                            <li>Sign up with Facebook</li>
+                            <div class='clear'> </div>
+                        </ul>
+                    </a>
+                </div>
+                <div class="col_1_of_f span_1_of_f">
+                    <a href="#" onclick="connectGoogle();">
+                        <ul class='google'>
+                            <i class="gg"> </i>
+                            <li>Sign up with Google</li>
+                            <div class='clear'> </div>
+                        </ul>
+                    </a>
+                </div>
+                <div class="clear"> </div>
+            </div>
+        </div>
+        <div id="step2">
+            <div id="profileBlock" class="profile">
+                <img id="profileImage"/>
+                <h4 style="text-align:center;" id="profileName"></h4>
+            </div>
+            <div align="center" id="errorBlock"><h2 id="errorMessage" style="color: red;"></h2></div>
+            <div class="lable-2">
+                <label>Số điện thoại</label>
+                <input id="phone" type="text" class="text" placeholder="Please enter your correct phone number" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
+            </div>
+            <div style="padding-top: 7em; padding-bottom:3em">
+            <p>Chương trình sẽ quay thưởng vào lúc 16h30 ngày 12/9; 12h00 và 16h30 ngày 13/9</p>
+            <p>Số điện thoại được sử dụng để quay thưởng và liên hệ sau khi trúng giải. Xem chi tiết <a href="http://event.infory.vn/ite2014/the-le/">thể lệ</a>.</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div id="nextButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="floating-button circle-text"><div>Tiếp tục</div></div>
+    <div id="submitButton" onclick="register();" style="margin: 10px 10px;cursor: pointer;" class="floating-button circle-text"><div>Đăng ký</div></div>
+
+    <div id="term" class="copy-right">
+        <p>By clicking 'SUBMIT' you are indicating that you've read
+            and agree to the <a href="http://infory.vn/tos/">INFORY terms</a>
+        </p>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+    <script type="text/javascript">
+
+    </script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+        var formMessage = getCookie('form_message');
+        if(formMessage !== undefined)
+        {
+            removeCookie('form_message');
+            $("#formMessage").html(formMessage);
+            $("#formMessage").show();
+        }
+        $("#errorBlock").hide();
+        $("#validateBlock").hide();
+        $("#submitButton").hide();
+        $("#step2").hide();
+        $("#term").hide();
+    });
+
+    var NAME = undefined;
+    var GENDER = undefined;
+    var DOB = undefined;
+    var gObj = null;
+    var fbObj = null;
+    var manualLogin = false;
+    var chatRef = new Firebase('https://infory.firebaseIO.com');
+    var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
+      if (error && manualLogin) {
+        $("#validateMessage").text("Kết nối tài khoản social không thành công!");
+        $("#validateBlock").show();
+        window.scrollTo(0, 0);
+      } else if (user) {
+        if(user.provider === 'facebook')
+        {
+            if(!manualLogin)
+            {
+                $.post("https://api.infory.vn/v1/auth/loginViaFacebook", { id: user.thirdPartyUserData.id })
+                .done(function(data) {
+                    if (data.error === undefined)
+                    {
+                        setCookie("user_id", data.userId, 365);
+                        window.location.replace(redirect_url);
+                    }
+
+                });
+            }
+
+            fbObj = user.thirdPartyUserData;
+            $("#fullname").val(fbObj.name);
+            var dobElems = fbObj.birthday.split("/");
+            $("#dob").val(dobElems[2]+"-"+dobElems[0]+"-"+dobElems[1]);
+            if(fbObj.gender == "male")
+                updateGender(1);
+            else
+                updateGender(0);
+            $("#profileImage").attr("src", fbObj.picture.data.url.replace("sz=50", "sz=100"));
+            $("#profileName").text(fbObj.name);
+            // $("#socialConnectBlock").hide();
+            $("#profileBlock").show();
+            window.scrollTo(0, 0);
+        }
+        else if(user.provider === 'google')
+        {
+            if(!manualLogin)
+            {
+                $.post("https://api.infory.vn/v1/auth/loginViaGoogle", { id: user.thirdPartyUserData.id })
+                .done(function(data) {
+                    if (data.error === undefined)
+                    {
+                        setCookie("user_id", data.userId, 365);
+                        window.location.replace(redirect_url);
+                    }
+                });
+            }
+        }
+      }
+    });
+
+    function updateGender(gender)
+    {
+        GENDER = gender;
+        if(gender === 1){
+            $("#maleButton").addClass("blue-button");
+            $("#femaleButton").removeClass("blue-button");
+        }
+        else if(gender === 0)
+        {
+            $("#femaleButton").addClass("blue-button");
+            $("#maleButton").removeClass("blue-button");
+        }
+    }
+    function normalizePhone(){
+        // normalize phone number
+        var phone = $("#phone").val().replace(/ /g,'');
+        if(phone.indexOf("+84") === 0)
+            phone = phone.substring(3);
+        if(phone.indexOf("84") === 0)
+            phone = phone.substring(2);
+        if(phone.indexOf("0") === 0)
+            phone = phone.substring(1);
+        phone = "+84 "+phone;
+        $("#phone").val(phone);
+    }
+    function validatePhone(){
+        var phone = $("#phone").val().substring(1).replace(/ /g,'');
+        // validate phone number
+        if(isNaN(Number(phone)))
+            return false;
+        else if(phone.indexOf("849") === 0)
+        {
+            if(phone.length !== 11)
+                return false;
+            return phone;
+        }
+        else if(phone.indexOf("841") === 0)
+        {
+            if(phone.length !== 12)
+                return false;
+            return phone;
+        }
+        else
+            return false;
+    }
+    function next(){
+        if(fbObj === null && gObj === null)
+        {
+            var name = $("#fullname").val();
+            var dob = $("#dob").val();
+            if(name.length === 0 || dob.length === 0 || GENDER === undefined)
+            {
+                $("#validateMessage").text('Bạn chưa điền đầy đủ thông tin');
+                $("#validateBlock").show();
+                window.scrollTo(0, 0);
+                return;
+            }
+        }
+        $("#submitButton").show();
+        $("#step2").show();
+        $("#term").show();
+        $("#nextButton").hide();
+        $("#step1").hide();
+    }
+    function register(){
+        $("#errorBlock").hide();
+
+        var phoneNumber = validatePhone();
+        if(phoneNumber === false)
+        {
+            $("#errorMessage").text('Số điện thoại không hợp lệ');
+            $("#errorBlock").show();
+            window.scrollTo(0, 0);
+            return;
+        }
+        var infoObj = {name: $("#fullname").val(), dob: $("#dob").val(), gender: GENDER};
+
+
+        $.post("https://api.infory.vn/v1/auth/ite2014/register",
+                    { phone: phoneNumber, info: JSON.stringify(infoObj), facebook: JSON.stringify(fbObj), google: JSON.stringify(gObj)})
+            .done(function(data) {
+                if (data.error !== undefined)
+                {
+                    $("#errorMessage").text(data.error);
+                    $("#errorBlock").show();
+                    window.scrollTo(0, 0);
+                }
+                else
+                {
+                    setCookie("user_id", data.userId, 365);
+                    window.location.replace(redirect_url);
+                }
+            }).fail(function(data)
+            {
+                $("#errorMessage").text('Đã có lỗi xảy ra khi kết nối với server. Vui lòng thử lại sau.');
+                $("#errorBlock").show();
+                window.scrollTo(0, 0);
+            });
+    }
+    function connectFacebook() {
+        manualLogin = true;
+        auth.login('facebook',{
+            rememberMe: false,
+            scope: 'public_profile,email,user_birthday'
+        });
+    }
+    function connectGoogle(){
+        manualLogin = true;
+        var myParams = {
+            'clientid' : '790158294934-9kqb42vpha0vuls75abb1108q45diq3g.apps.googleusercontent.com', //You need to set client id
+            'cookiepolicy' : 'single_host_origin',
+            'callback' : 'gStatusChangeCallback', //callback function
+            'approvalprompt':'force',
+            'scope' : 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+        };
+        gapi.auth.signIn(myParams);
+    }
+    function gStatusChangeCallback(result){
+        if(result['status']['signed_in'])
+        {
+            var request = gapi.client.plus.people.get({'userId': 'me', 'fields': 'ageRange,birthday,cover,displayName,emails/value,gender,id,image,name(familyName,givenName)'});
+            request.execute(function (resp){
+                gObj = resp;
+                $("#fullname").val(gObj.displayName);
+                $("#dob").val(gObj.birthday);
+                if(gObj.gender == "male")
+                    updateGender(1);
+                else
+                    updateGender(0);
+                $("#profileImage").attr("src", gObj.image.url.replace("sz=50", "sz=100"));
+                $("#profileName").text(gObj.displayName);
+                // $("#socialConnectBlock").hide();
+                $("#profileBlock").show();
+            });
+        } else {
+            $("#errorMessage").text("Kết nối tài khoản google không thành công!");
+            $("#errorBlock").show();
+            window.scrollTo(0, 0);
+        }
+    }
+    function onLoadCallback(){
+        gapi.client.setApiKey('AIzaSyA4AYLIeG8R-i8BOQylnwMsShwqfapttP4'); //set your API KEY
+        gapi.client.load('plus', 'v1',function(){});//Load Google + API
+    }
+</script>
+<!-- Google plus SDK section -->
+<script type="text/javascript">
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/client.js?onload=onLoadCallback';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+</script>
+<!-- End Google plus SDK section -->
