@@ -47,7 +47,7 @@ module.exports.routes = {
     controller: 'GiftCodeController',
     action: 'generatecode'
   },
-  'POST /gift_code/active': {
+  'GET /gift_code/active': {
     controller: 'GiftCodeController',
     action: 'active'
   },
