@@ -29,7 +29,7 @@ module.exports.policies = {
         '*': false,
         'generatecode' : 'oauthBearer',
         'issue' : 'oauthBearer',
-        'active' : 'oauthBearer'
+        'active' : true
     },
     Source: {
         '*': false
@@ -39,8 +39,8 @@ module.exports.policies = {
     },
     Customer: {
         '*': false,
-        'create': 'oauthBearer',
-        'find': 'oauthBearer'
+        'create': true,
+        'find': true
     }
 
 };
