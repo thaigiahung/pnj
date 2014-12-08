@@ -29,7 +29,8 @@ module.exports.policies = {
         '*': false,
         'generatecode' : 'oauthBearer',
         'issue' : 'oauthBearer',
-        'active' : true
+        'active' : true,
+        'check' : true
     },
     Source: {
         '*': false

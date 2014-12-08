@@ -15,6 +15,7 @@ module.exports = {
   	},
   	customer: { model: 'customer' },
   	status: { type: 'integer', defaultsTo: 0},
+    check: { type: 'integer', defaultsTo: 0},
   	source: { model: 'source' }
   }
 };

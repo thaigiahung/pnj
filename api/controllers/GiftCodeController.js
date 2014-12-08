@@ -174,6 +174,88 @@ module.exports = {
 				}
 			});
 		}		
-	}
+	},
+
+  	check: function(req,res)
+  	{
+	    var code = req.param('code');
+	    if (!code) {
+	      	res.json(
+		        {
+		          "message": "Missing Parameter",
+		          "status": 0
+		        }
+	      	);
+	    }
+	    else
+	    {
+	      	GiftCode.findOne({code : code}).exec(function (err, giftcode){
+		        if(typeof giftcode == "undefined" || err)
+		        {
+		          res.json(
+			            {
+			              "message": "Invalid Gift Code!",
+			              "status": 0
+			            }
+			        );
+		        }
+		        else if(giftcode.check == 1)
+		        {
+		            res.json(
+						{
+							"message": "Gift Code has already been checked!",
+							"status": 0
+						}
+		            );
+		        }
+		        else {
+		          	if(giftcode.customer === null)
+			          	res.json(
+			              	{
+			                	"message": "Gift Code is not issued!",
+			                	"status": 0
+			              	}
+			            );
+			        else
+			        {
+			        	//Update field `check` 
+		          		GiftCode.update({code : code},{check : 1}).exec(function (err2, giftcode2){
+			          		if(err2)
+		          			{
+		          		    	res.json(
+			          	    	{
+			          	      		"message": "Cannot update Gift Code!",
+			          	      		"status": 0
+			          	    	})  
+			         	   	}	 
+			                else
+			                {
+			                	Customer.findOne({id : giftcode.customer}).exec(function (err, cus){
+			                		if(err){
+			                			res.json(
+					          	    	{
+					          	      		"message": "Cannot get user info!",
+					          	      		"status": 0
+					          	    	})
+			                		}
+			                		else
+			                		{
+			                			res.json({
+			                				"message": "Success",
+					          	      		"status": 1,
+			                				"first_name": cus.first_name,
+			                				"last_name": cus.last_name,
+			                				"phone": cus.phone,
+			                				"email": cus.email
+			                			})
+			                		}
+			                	})
+			                }            
+			         	})
+			        }		          	
+		        }
+	      	});
+	    }
+  	}
 };
 

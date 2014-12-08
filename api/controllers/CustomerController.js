@@ -6,26 +6,26 @@
  */
 
 module.exports = {
-create: function(req, res){
-  var name = req.param('name');
-  var phone = req.param('phone');
-  var gender = req.param('gender');
-  var email = req.param('email');
-  var fb_id = req.param('fb_id');
-  var fb = req.param('fb');
-  var gg_id = req.param('gg_id');
-  var gg = req.param('gg');
-  var utm = req.param('utm_source');
-  var send_sms = req.param('send_sms');
+  create: function(req, res){
+    var first_name = req.param('first_name');
+    var last_name = req.param('last_name');
+    var phone = req.param('phone');
+    var gender = req.param('gender');
+    var email = req.param('email');
+    var fb_id = req.param('fb_id');
+    var fb = req.param('fb');
+    var gg_id = req.param('gg_id');
+    var gg = req.param('gg');
+    var utm = req.param('utm_source');
+    var send_sms = req.param('send_sms');
 
-  if (!name || !phone || !gender || !email) {
-    res.json(
-      {
-        "message": "Missing Parameter(s)",
-        "status": 0
-      }
-      );
-      res.status(400);
+    if (!first_name || !last_name || !phone || !gender || !email) {
+      res.json(
+        {
+          "message": "Missing Parameter(s)",
+          "status": 0
+        });
+        res.status(400);
     }
     else {
        Customer.findOne({phone : phone}).exec(function (err, user){
@@ -37,7 +37,8 @@ create: function(req, res){
            }
            else {
              Customer.create({
-               name : name,
+               first_name : first_name,
+               last_name : last_name,
                phone : phone,
                gender : gender,
                email : email
@@ -119,6 +120,6 @@ create: function(req, res){
            }
          });
     }
-}
+  }
 };
 

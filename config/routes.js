@@ -51,5 +51,9 @@ module.exports.routes = {
     controller: 'GiftCodeController',
     action: 'active'
   },
+  'POST /gift_code/check': {
+    controller: 'GiftCodeController',
+    action: 'check'
+  },
   'POST /user/get/all': 'Customer.find'
 }
