@@ -190,8 +190,8 @@ module.exports = {
 		                		else
 		                		{
 			            			var data = cus.first_name + "\n" + cus.last_name + "\n" + cus.phone + "\n" + cus.email;
-			        				var file_name = file_path + giftcode.code + ".txt";
-			            			fs.writeFile(file_name, data, function (err) {
+			        				var file_name = giftcode.code + ".txt";
+			            			fs.writeFile("assets/"+file_name, data, function (err) {
 			        					if(err){
 				                			res.json(
 						          	    	{
