@@ -4,6 +4,10 @@
  * @description :: Server-side logic for managing Giftcodes
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+
+var fs = require('fs');
+var file_path = 'activated_code/';
+
 function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -163,14 +167,44 @@ module.exports = {
 					 	res.status(400);
 				}
 				else {
-					//trả status 0 và message là "Gift code has already been activated"
-					GiftCode.update({code : code},{status : 2}).exec(function (err2, giftcode2){
-						res.json(
-					 	{
-					 		"message": "Success",
-					 		"status": 1
-					 	})				
-					})
+		        	//Update field `check` 
+	          		GiftCode.update({code : code},{status : 2}).exec(function (err2, giftcode2){
+		          		if(err2)
+	          			{
+	          		    	res.json(
+		          	    	{
+		          	      		"message": "Cannot update Gift Code!",
+		          	      		"status": 0
+		          	    	})  
+		         	   	}	 
+		                else
+		                {
+		                	Customer.findOne({id : giftcode.customer}).exec(function (err, cus){
+		                		if(err){
+		                			res.json(
+				          	    	{
+				          	      		"message": "Cannot get user info!",
+				          	      		"status": 0
+				          	    	})
+		                		}
+		                		else
+		                		{
+			            			var data = cus.first_name + "\n" + cus.last_name + "\n" + cus.phone + "\n" + cus.email;
+			        				var file_name = file_path + giftcode.code + ".txt";
+			            			fs.writeFile("assets/"+file_name, data, function (err) {
+			        					if(err){
+				                			res.json(
+						          	    	{
+						          	      		"message": "Cannot write file!",
+						          	      		"status": 0
+						          	    	})
+			        					}
+			            			});
+			            			res.send("pnj.infory.vn/"+file_name);	
+		                		}
+		                	})
+		                }            
+		         	})
 				}
 			});
 		}		
