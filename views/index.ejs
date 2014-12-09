@@ -177,7 +177,7 @@
     var gObj = null;
     var fbObj = null;
     var manualLogin = false;
-    var chatRef = new Firebase('https://pnj.firebaseIO.com');
+    var chatRef = new Firebase('https://pnj.firebaseio.com/');
     var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
       if (error && manualLogin) {
         $("#validateMessage").text("Kết nối tài khoản social không thành công!");
