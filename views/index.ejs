@@ -47,9 +47,9 @@
 
     storeParams();
     var redirect_url = getCookie('redirect_url');
-    if(redirect_url === undefined)
+    /*if(redirect_url === undefined)
         redirect_url = "http://infory.vn";
-    /*if(getCookie('user_id') !== undefined)
+    if(getCookie('user_id') !== undefined)
         window.location.replace(redirect_url);*/
 </script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
@@ -62,14 +62,25 @@
     <div class="main">
         <div id="step1">
             <div align="center" id="formMessage">
-                <h1 class="header">Cơ hội trúng thưởng tại ITE 2014</h1>
-                <h2 style="padding-bottom: 0px;">Cùng Du lịch & giải trí - đi du lịch miễn phí!</h2>
+                <h1 class="header">CIRCLE CHRISTMAS</h1>
+                <h2 style="padding-bottom: 0px;">Giảm 30%</h2>
                 <h2>ĐĂNG KÝ THAM GIA CHƯƠNG TRÌNH</h2>
             </div>
             <div align="center" id="validateBlock"><h2 id="validateMessage" style="color: red;"></h2></div>
             <div class="lable-2">
-                <label>Họ và Tên</label>
-                <input id="fullname" type="text" class="text" placeholder="Please enter your fullname">
+                <label>Họ</label>
+                <input id="last_name" type="text" class="text" placeholder="Vui lòng nhập họ">
+                <div class="clear"></div>
+            </div>
+            <div class="lable-2">
+                <label>Tên</label>
+                <input id="first_name" type="text" class="text" placeholder="Vui lòng nhập tên">
+                <div class="clear"></div>
+            </div>
+            <div class="lable-2">
+                <label>Email</label>
+                <input id="email" type="text" class="text" placeholder="Vui lòng nhập email">
+                <div class="clear"></div>
             </div>
             <div class="lable">
                <div class="col_1_of_2 span_1_of_2">
@@ -120,11 +131,10 @@
             <div align="center" id="errorBlock"><h2 id="errorMessage" style="color: red;"></h2></div>
             <div class="lable-2">
                 <label>Số điện thoại</label>
-                <input id="phone" type="text" class="text" placeholder="Please enter your correct phone number" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
+                <input id="phone" type="text" class="text" placeholder="Vui lòng điền số điện thoại" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
             </div>
             <div style="padding-top: 7em; padding-bottom:3em">
-            <p>Chương trình sẽ quay thưởng vào lúc 16h30 ngày 12/9; 12h00 và 16h30 ngày 13/9</p>
-            <p>Số điện thoại được sử dụng để quay thưởng và liên hệ sau khi trúng giải. Xem chi tiết <a href="http://event.infory.vn/ite2014/the-le/">thể lệ</a>.</p>
+            <p>Chúng tôi sẽ gởi mã nhận thưởng qua số điện thoại này.</p>
             </div>
             <div class="clear"></div>
         </div>
@@ -181,14 +191,16 @@
                     if (data.error === undefined)
                     {
                         setCookie("user_id", data.userId, 365);
-                        window.location.replace(redirect_url);
+                        // window.location.replace(redirect_url);
                     }
 
                 });
             }
 
             fbObj = user.thirdPartyUserData;
-            $("#fullname").val(fbObj.name);
+            console.log(fbObj);
+            $("#last_name").val(fbObj.first_name);
+            $("#first_name").val(fbObj.middle_name + " " + fbObj.last_name);
             var dobElems = fbObj.birthday.split("/");
             $("#dob").val(dobElems[2]+"-"+dobElems[0]+"-"+dobElems[1]);
             if(fbObj.gender == "male")
@@ -210,7 +222,7 @@
                     if (data.error === undefined)
                     {
                         setCookie("user_id", data.userId, 365);
-                        window.location.replace(redirect_url);
+                        // window.location.replace(redirect_url);
                     }
                 });
             }
@@ -220,15 +232,16 @@
 
     function updateGender(gender)
     {
-        GENDER = gender;
         if(gender === 1){
             $("#maleButton").addClass("blue-button");
             $("#femaleButton").removeClass("blue-button");
+            GENDER = "true";
         }
         else if(gender === 0)
         {
             $("#femaleButton").addClass("blue-button");
             $("#maleButton").removeClass("blue-button");
+            GENDER = "false";
         }
     }
     function normalizePhone(){
@@ -240,11 +253,12 @@
             phone = phone.substring(2);
         if(phone.indexOf("0") === 0)
             phone = phone.substring(1);
-        phone = "+84 "+phone;
+        phone = "84"+phone;
         $("#phone").val(phone);
     }
     function validatePhone(){
-        var phone = $("#phone").val().substring(1).replace(/ /g,'');
+        // var phone = $("#phone").val().substring(1).replace(/ /g,'');
+        var phone = $("#phone").val();
         // validate phone number
         if(isNaN(Number(phone)))
             return false;
@@ -293,11 +307,19 @@
             window.scrollTo(0, 0);
             return;
         }
-        var infoObj = {name: $("#fullname").val(), dob: $("#dob").val(), gender: GENDER};
+        var infoObj = {
+                        first_name: $("#first_name").val(), 
+                        last_name: $("#last_name").val(), 
+                        gender: GENDER,
+                        email: $("#email").val(), 
+                        phone: $("#phone").val(), 
+                        utm_source: 'posm', 
+                        send_sms: 'true'
+                    };
+        console.log(infoObj);
 
-
-        $.post("https://api.infory.vn/v1/auth/ite2014/register",
-                    { phone: phoneNumber, info: JSON.stringify(infoObj), facebook: JSON.stringify(fbObj), google: JSON.stringify(gObj)})
+        $.post("localhost:1337/user/create",
+                    { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: GENDER, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true',facebook: JSON.stringify(fbObj), google: JSON.stringify(gObj)})
             .done(function(data) {
                 if (data.error !== undefined)
                 {
@@ -308,10 +330,11 @@
                 else
                 {
                     setCookie("user_id", data.userId, 365);
-                    window.location.replace(redirect_url);
+                    // window.location.replace(redirect_url);
                 }
             }).fail(function(data)
             {
+                console.log(data);
                 $("#errorMessage").text('Đã có lỗi xảy ra khi kết nối với server. Vui lòng thử lại sau.');
                 $("#errorBlock").show();
                 window.scrollTo(0, 0);
@@ -341,6 +364,7 @@
             var request = gapi.client.plus.people.get({'userId': 'me', 'fields': 'ageRange,birthday,cover,displayName,emails/value,gender,id,image,name(familyName,givenName)'});
             request.execute(function (resp){
                 gObj = resp;
+                console.log(gObj);
                 $("#fullname").val(gObj.displayName);
                 $("#dob").val(gObj.birthday);
                 if(gObj.gender == "male")
