@@ -172,6 +172,8 @@
     var NAME = undefined;
     var GENDER = undefined;
     var DOB = undefined;
+    var GG_ID = null;
+    var FB_ID = null;
     var gObj = null;
     var fbObj = null;
     var manualLogin = false;
@@ -198,7 +200,7 @@
             }
 
             fbObj = user.thirdPartyUserData;
-            console.log(fbObj);
+            FB_ID = user.thirdPartyUserData.id;
             $("#last_name").val(fbObj.first_name);
             $("#first_name").val(fbObj.middle_name + " " + fbObj.last_name);
             var dobElems = fbObj.birthday.split("/");
@@ -215,6 +217,7 @@
         }
         else if(user.provider === 'google')
         {
+            GG_ID = user.thirdPartyUserData.id;
             if(!manualLogin)
             {
                 $.post("https://api.infory.vn/v1/auth/loginViaGoogle", { id: user.thirdPartyUserData.id })
@@ -307,19 +310,23 @@
             window.scrollTo(0, 0);
             return;
         }
-        var infoObj = {
-                        first_name: $("#first_name").val(), 
-                        last_name: $("#last_name").val(), 
-                        gender: GENDER,
-                        email: $("#email").val(), 
-                        phone: $("#phone").val(), 
-                        utm_source: 'posm', 
-                        send_sms: 'true'
-                    };
-        console.log(infoObj);
+        // var infoObj = {
+        //                 first_name: $("#first_name").val(), 
+        //                 last_name: $("#last_name").val(), 
+        //                 gender: GENDER,
+        //                 email: $("#email").val(), 
+        //                 phone: $("#phone").val(), 
+        //                 utm_source: 'posm', 
+        //                 send_sms: 'true',
+        //                 fb_id: FB_ID,
+        //                 fb:JSON.stringify(fbObj),
+        //                 gg_id: GG_ID, 
+        //                 gg: JSON.stringify(gObj)
+        //             };
+        // console.log(infoObj);
 
-        $.post("localhost:1337/user/create",
-                    { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: GENDER, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true',facebook: JSON.stringify(fbObj), google: JSON.stringify(gObj)})
+        $.post("/user/create",
+                    { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: GENDER, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: FB_ID,fb: JSON.stringify(fbObj), gg_id: GG_ID, gg: JSON.stringify(gObj)})
             .done(function(data) {
                 if (data.error !== undefined)
                 {
@@ -364,7 +371,7 @@
             var request = gapi.client.plus.people.get({'userId': 'me', 'fields': 'ageRange,birthday,cover,displayName,emails/value,gender,id,image,name(familyName,givenName)'});
             request.execute(function (resp){
                 gObj = resp;
-                console.log(gObj);
+
                 $("#fullname").val(gObj.displayName);
                 $("#dob").val(gObj.birthday);
                 if(gObj.gender == "male")
