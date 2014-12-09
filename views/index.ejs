@@ -310,23 +310,23 @@
             window.scrollTo(0, 0);
             return;
         }
-        // var infoObj = {
-        //                 first_name: $("#first_name").val(), 
-        //                 last_name: $("#last_name").val(), 
-        //                 gender: GENDER,
-        //                 email: $("#email").val(), 
-        //                 phone: $("#phone").val(), 
-        //                 utm_source: 'posm', 
-        //                 send_sms: 'true',
-        //                 fb_id: FB_ID,
-        //                 fb:JSON.stringify(fbObj),
-        //                 gg_id: GG_ID, 
-        //                 gg: JSON.stringify(gObj)
-        //             };
+        var infoObj = {
+                        first_name: $("#first_name").val(), 
+                        last_name: $("#last_name").val(), 
+                        gender: GENDER,
+                        email: $("#email").val(), 
+                        phone: $("#phone").val(), 
+                        utm_source: 'posm', 
+                        send_sms: 'true',
+                        fb_id: FB_ID,
+                        fb:JSON.stringify(fbObj),
+                        gg_id: GG_ID, 
+                        gg: JSON.stringify(gObj)
+                    };
         // console.log(infoObj);
 
         $.post("/user/create",
-                    { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: GENDER, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: FB_ID,fb: JSON.stringify(fbObj), gg_id: GG_ID, gg: JSON.stringify(gObj)})
+                    { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: infoObj.gender, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
             .done(function(data) {
                 if (data.error !== undefined)
                 {
