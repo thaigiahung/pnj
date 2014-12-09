@@ -61,17 +61,17 @@
 
     <div class="main">
         <div id="step1">
-            <div align="center" id="formMessage">
-                <h1 class="header">CIRCLE CHRISTMAS</h1>
-                <h2 style="padding-bottom: 0px;">Giảm 30%</h2>
-                <h2>ĐĂNG KÝ THAM GIA CHƯƠNG TRÌNH</h2>
-            </div>
+            <a href="#scrollToHere">
+                <img src="1.jpg">
+            </a>        
+            
             <div align="center" id="validateBlock"><h2 id="validateMessage" style="color: red;"></h2></div>
             <div class="lable-2">
                 <label>Họ</label>
                 <input id="family_name" type="text" class="text" placeholder="Vui lòng nhập họ">
                 <div class="clear"></div>
             </div>
+            <a name="scrollToHere" id="scrollToHere"></a>
             <div class="lable-2">
                 <label>Tên</label>
                 <input id="given_name" type="text" class="text" placeholder="Vui lòng nhập tên">
@@ -167,6 +167,13 @@
         $("#submitButton").hide();
         $("#step2").hide();
         $("#term").hide();
+
+        $('a').click(function(){
+            $('html, body').animate({
+                scrollTop: $( $(this).attr('href') ).offset().top
+            }, 500);
+            return false;
+        });
     });
 
     var NAME = undefined;
@@ -322,7 +329,7 @@
                         gg_id: GG_ID, 
                         gg: JSON.stringify(gObj)
                     };
-        console.log(infoObj);
+        // console.log(infoObj);
 
         $.post("/user/create",
                     { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: infoObj.gender, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
@@ -370,7 +377,7 @@
             var request = gapi.client.plus.people.get({'userId': 'me', 'fields': 'ageRange,birthday,cover,displayName,emails/value,gender,id,image,name(familyName,givenName)'});
             request.execute(function (resp){
                 gObj = resp;
-console.log(gObj);
+
                 GG_ID = gObj.id;
                 $("#family_name").val(gObj.name.familyName);
                 $("#given_name").val(gObj.name.givenName);
