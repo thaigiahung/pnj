@@ -69,12 +69,12 @@
             <div align="center" id="validateBlock"><h2 id="validateMessage" style="color: red;"></h2></div>
             <div class="lable-2">
                 <label>Họ</label>
-                <input id="last_name" type="text" class="text" placeholder="Vui lòng nhập họ">
+                <input id="family_name" type="text" class="text" placeholder="Vui lòng nhập họ">
                 <div class="clear"></div>
             </div>
             <div class="lable-2">
                 <label>Tên</label>
-                <input id="first_name" type="text" class="text" placeholder="Vui lòng nhập tên">
+                <input id="given_name" type="text" class="text" placeholder="Vui lòng nhập tên">
                 <div class="clear"></div>
             </div>
             <div class="lable-2">
@@ -177,7 +177,7 @@
     var gObj = null;
     var fbObj = null;
     var manualLogin = false;
-    var chatRef = new Firebase('https://infory.firebaseIO.com');
+    var chatRef = new Firebase('https://pnj.firebaseIO.com');
     var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
       if (error && manualLogin) {
         $("#validateMessage").text("Kết nối tài khoản social không thành công!");
@@ -201,8 +201,8 @@
 
             fbObj = user.thirdPartyUserData;
             FB_ID = user.thirdPartyUserData.id;
-            $("#last_name").val(fbObj.first_name);
-            $("#first_name").val(fbObj.middle_name + " " + fbObj.last_name);
+            $("#family_name").val(fbObj.first_name);
+            $("#given_name").val(fbObj.middle_name + " " + fbObj.last_name);
             var dobElems = fbObj.birthday.split("/");
             $("#dob").val(dobElems[2]+"-"+dobElems[0]+"-"+dobElems[1]);
             if(fbObj.gender == "male")
@@ -217,7 +217,6 @@
         }
         else if(user.provider === 'google')
         {
-            GG_ID = user.thirdPartyUserData.id;
             if(!manualLogin)
             {
                 $.post("https://api.infory.vn/v1/auth/loginViaGoogle", { id: user.thirdPartyUserData.id })
@@ -311,8 +310,8 @@
             return;
         }
         var infoObj = {
-                        first_name: $("#first_name").val(), 
-                        last_name: $("#last_name").val(), 
+                        first_name: $("#given_name").val(), 
+                        last_name: $("#family_name").val(), 
                         gender: GENDER,
                         email: $("#email").val(), 
                         phone: $("#phone").val(), 
@@ -323,7 +322,7 @@
                         gg_id: GG_ID, 
                         gg: JSON.stringify(gObj)
                     };
-        // console.log(infoObj);
+        console.log(infoObj);
 
         $.post("/user/create",
                     { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: infoObj.gender, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
@@ -357,7 +356,7 @@
     function connectGoogle(){
         manualLogin = true;
         var myParams = {
-            'clientid' : '790158294934-9kqb42vpha0vuls75abb1108q45diq3g.apps.googleusercontent.com', //You need to set client id
+            'clientid' : '107748975446-p466jers14o0jmc512geam3tss8qlp6l.apps.googleusercontent.com', //You need to set client id
             'cookiepolicy' : 'single_host_origin',
             'callback' : 'gStatusChangeCallback', //callback function
             'approvalprompt':'force',
@@ -371,9 +370,11 @@
             var request = gapi.client.plus.people.get({'userId': 'me', 'fields': 'ageRange,birthday,cover,displayName,emails/value,gender,id,image,name(familyName,givenName)'});
             request.execute(function (resp){
                 gObj = resp;
-
-                $("#fullname").val(gObj.displayName);
-                $("#dob").val(gObj.birthday);
+console.log(gObj);
+                GG_ID = gObj.id;
+                $("#family_name").val(gObj.name.familyName);
+                $("#given_name").val(gObj.name.givenName);
+                $("#email").val(gObj.emails[0].value);
                 if(gObj.gender == "male")
                     updateGender(1);
                 else
@@ -390,7 +391,7 @@
         }
     }
     function onLoadCallback(){
-        gapi.client.setApiKey('AIzaSyA4AYLIeG8R-i8BOQylnwMsShwqfapttP4'); //set your API KEY
+        gapi.client.setApiKey('AIzaSyAnSEYIUCm_ZlE3oTzLLRchoYlQpqHWZ3M'); //set your API KEY
         gapi.client.load('plus', 'v1',function(){});//Load Google + API
     }
 </script>
