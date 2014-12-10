@@ -90,11 +90,11 @@
                 <input id="phone" type="text" class="text" placeholder="Vui lòng nhập số điện thoại" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
                 <div class="clear"></div>
             </div>
-            <div class="lable">
-               <!-- <div class="col_1_of_2 span_1_of_2">
+            <!-- <div class="lable">
+               <div class="col_1_of_2 span_1_of_2">
                    <label>Ngày sinh</label>
                    <input id="dob" type="date" class="text" onblur="DOB = this.value">
-               </div> -->
+               </div>
                <div class="col_1_of_2 span_1_of_2">
                    <label>Giới tính</label>
                    <div>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="clear"></div>
-            </div>
+            </div> -->
             <h2>Hoặc đăng ký nhanh với:</h2>
             <div id="socialConnectBlock" class="social-icons">
                 <div class="col_1_of_f span_1_of_f">
@@ -184,7 +184,7 @@
     });
 
     var NAME = undefined;
-    var GENDER = undefined;
+    // var GENDER = undefined;
     var DOB = undefined;
     var GG_ID = null;
     var FB_ID = null;
@@ -219,10 +219,10 @@
             $("#given_name").val(fbObj.middle_name + " " + fbObj.last_name);
             var dobElems = fbObj.birthday.split("/");
             $("#dob").val(dobElems[2]+"-"+dobElems[0]+"-"+dobElems[1]);
-            if(fbObj.gender == "male")
+            /*if(fbObj.gender == "male")
                 updateGender(1);
             else
-                updateGender(0);
+                updateGender(0);*/
             $("#profileImage").attr("src", fbObj.picture.data.url.replace("sz=50", "sz=100"));
             $("#profileName").text(fbObj.name);
             // $("#socialConnectBlock").hide();
@@ -246,7 +246,7 @@
       }
     });
 
-    function updateGender(gender)
+    /*function updateGender(gender)
     {
         if(gender === 1){
             $("#maleButton").addClass("blue-button");
@@ -259,7 +259,7 @@
             $("#maleButton").removeClass("blue-button");
             GENDER = "false";
         }
-    }
+    }*/
     function normalizePhone(){
         // normalize phone number
         var phone = $("#phone").val().replace(/ /g,'');
@@ -329,7 +329,7 @@
         var infoObj = {
                             first_name: $("#given_name").val(), 
                             last_name: $("#family_name").val(), 
-                            gender: GENDER,
+                            // gender: GENDER,
                             email: $("#email").val(), 
                             phone: phoneNumber, 
                             utm_source: $("#source").val(), 
@@ -344,7 +344,7 @@
 
         if(fbObj === null && gObj === null)
         {
-            if(infoObj.first_name.length === 0 || infoObj.last_name.length === 0 || infoObj.email.length === 0 || infoObj.phone.length === 0 || infoObj.gender === undefined)
+            if(infoObj.first_name.length === 0 || infoObj.last_name.length === 0 || infoObj.email.length === 0 || infoObj.phone.length === 0)
             {
                 $("#validateMessage").text('Bạn chưa điền đầy đủ thông tin');
                 $("#validateBlock").show();
@@ -359,7 +359,7 @@
 
     function register (infoObj, height) {
         $.post("/user/create",
-                    { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: infoObj.gender, email: infoObj.email, phone: infoObj.phone, utm_source: infoObj.utm_source, send_sms: infoObj.send_sms, fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
+                    { first_name: infoObj.first_name, last_name: infoObj.last_name, email: infoObj.email, phone: infoObj.phone, utm_source: infoObj.utm_source, send_sms: infoObj.send_sms, fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
             .done(function(data) {
                 if (data.error !== undefined)
                 {
@@ -423,10 +423,10 @@
                 $("#family_name").val(gObj.name.familyName);
                 $("#given_name").val(gObj.name.givenName);
                 $("#email").val(gObj.emails[0].value);
-                if(gObj.gender == "male")
+                /*if(gObj.gender == "male")
                     updateGender(1);
                 else
-                    updateGender(0);
+                    updateGender(0);*/
                 $("#profileImage").attr("src", gObj.image.url.replace("sz=50", "sz=100"));
                 $("#profileName").text(gObj.displayName);
                 // $("#socialConnectBlock").hide();
