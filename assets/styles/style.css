@@ -515,3 +515,28 @@ label {
     display: block;
 }
 
+.btn-register {
+  float: right;
+  background: #f5cfff;
+  background-image: -webkit-linear-gradient(top, #f5cfff, #ffa1fc);
+  background-image: -moz-linear-gradient(top, #f5cfff, #ffa1fc);
+  background-image: -ms-linear-gradient(top, #f5cfff, #ffa1fc);
+  background-image: -o-linear-gradient(top, #f5cfff, #ffa1fc);
+  background-image: linear-gradient(to bottom, #f5cfff, #ffa1fc);
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  text-shadow: 1px 1px 3px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 20px 40px 20px 40px;
+  border: solid #d3b4d6 1px;
+  text-decoration: none;
+}
+
+.btn-register:hover {
+  background: #ea96ff;
+  text-decoration: none;
+}
+

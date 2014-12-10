@@ -61,17 +61,20 @@
     <div class="main">
         <div id="step1">
             <a href="#scrollToHere">
-                <img id="promotion-img" src="1.jpg">
+                <center>
+                    <img id="promotion-img" src="/images/Advertorial_Noel.jpg">
+                </center>                
             </a>        
             
             <div align="center" id="validateBlock"><h2 id="validateMessage" style="color: red;"></h2></div>
+            <a name="scrollToHere" id="scrollToHere"></a>
             <div class="lable-2">
                 <label>Họ</label>
                 <input id="source" type="hidden" value=<%= source %>>
                 <input id="family_name" type="text" class="text" placeholder="Vui lòng nhập họ">
                 <div class="clear"></div>
             </div>
-            <a name="scrollToHere" id="scrollToHere"></a>
+            
             <div class="lable-2">
                 <label>Tên</label>
                 <input id="given_name" type="text" class="text" placeholder="Vui lòng nhập tên">
@@ -132,7 +135,7 @@
                 <p>Khi nhấn nút "Đăng ký", bạn đã đồng ý với <a href="http://infory.vn/tos/">các điều khoản của Infory</a>
                 </p>
             </div>
-            <div id="submitButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="circle-text"><div>Đăng ký</div></div>
+            <div id="submitButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="btn-register"><div>Đăng ký</div></div>
         </div>
         <div id="step2">
             <div id="profileBlock" class="profile">
@@ -145,7 +148,7 @@
                 <input id="phone" type="text" class="text" placeholder="Vui lòng điền số điện thoại" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
             </div> -->
             <div style="padding-top: 7em; padding-bottom:3em">
-            <p>Chúng tôi sẽ gởi mã nhận thưởng qua số điện thoại này.</p>
+            <p id="res-message"></p>
             </div>
             <div class="clear"></div>
         </div>
@@ -373,6 +376,8 @@
                 {
                     setCookie("user_id", data.userId, 365);
                     // window.location.replace(redirect_url);
+
+                    $("#res-message").html('Cám ơn bạn đã tham gia chương trình. Chúng tôi sẽ gởi mã nhận thưởng qua số điện thoại ' + infoObj.phone + '.');
 
                     $("#submitButton").hide();
                     $("#step2").show();
