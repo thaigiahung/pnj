@@ -62,7 +62,7 @@
     <div class="main">
         <div id="step1">
             <a href="#scrollToHere">
-                <img src="1.jpg">
+                <img id="promotion-img" src="1.jpg">
             </a>        
             
             <div align="center" id="validateBlock"><h2 id="validateMessage" style="color: red;"></h2></div>
@@ -82,11 +82,16 @@
                 <input id="email" type="text" class="text" placeholder="Vui lòng nhập email">
                 <div class="clear"></div>
             </div>
+            <div class="lable-2">
+                <label>Điện thoại</label>
+                <input id="phone" type="text" class="text" placeholder="Vui lòng nhập số điện thoại" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
+                <div class="clear"></div>
+            </div>
             <div class="lable">
-               <div class="col_1_of_2 span_1_of_2">
+               <!-- <div class="col_1_of_2 span_1_of_2">
                    <label>Ngày sinh</label>
                    <input id="dob" type="date" class="text" onblur="DOB = this.value">
-               </div>
+               </div> -->
                <div class="col_1_of_2 span_1_of_2">
                    <label>Giới tính</label>
                    <div>
@@ -122,6 +127,13 @@
                 </div>
                 <div class="clear"> </div>
             </div>
+            <!-- <div id="nextButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="circle-text"><div>Tiếp tục</div></div> -->
+            <div id="term" class="copy-right">
+                <p>By clicking 'SUBMIT' you are indicating that you've read
+                    and agree to the <a href="http://infory.vn/tos/">INFORY terms</a>
+                </p>
+            </div>
+            <div id="submitButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="circle-text"><div>Đăng ký</div></div>
         </div>
         <div id="step2">
             <div id="profileBlock" class="profile">
@@ -129,24 +141,18 @@
                 <h4 style="text-align:center;" id="profileName"></h4>
             </div>
             <div align="center" id="errorBlock"><h2 id="errorMessage" style="color: red;"></h2></div>
-            <div class="lable-2">
+            <!-- <div class="lable-2">
                 <label>Số điện thoại</label>
                 <input id="phone" type="text" class="text" placeholder="Vui lòng điền số điện thoại" onfocus="this.value = '+84 ';" onblur="normalizePhone();">
-            </div>
+            </div> -->
             <div style="padding-top: 7em; padding-bottom:3em">
             <p>Chúng tôi sẽ gởi mã nhận thưởng qua số điện thoại này.</p>
             </div>
             <div class="clear"></div>
         </div>
+        
     </div>
-    <div id="nextButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="floating-button circle-text"><div>Tiếp tục</div></div>
-    <div id="submitButton" onclick="register();" style="margin: 10px 10px;cursor: pointer;" class="floating-button circle-text"><div>Đăng ký</div></div>
-
-    <div id="term" class="copy-right">
-        <p>By clicking 'SUBMIT' you are indicating that you've read
-            and agree to the <a href="http://infory.vn/tos/">INFORY terms</a>
-        </p>
-    </div>
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdn.firebase.com/v0/firebase.js"></script>
     <script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
@@ -164,9 +170,7 @@
         }
         $("#errorBlock").hide();
         $("#validateBlock").hide();
-        $("#submitButton").hide();
         $("#step2").hide();
-        $("#term").hide();
 
         $('a').click(function(){
             $('html, body').animate({
@@ -286,51 +290,71 @@
         else
             return false;
     }
+    // function next(){
+    //     if(fbObj === null && gObj === null)
+    //     {
+    //         var name = $("#fullname").val();
+    //         var dob = $("#dob").val();
+    //         if(name.length === 0 || dob.length === 0 || GENDER === undefined)
+    //         {
+    //             $("#validateMessage").text('Bạn chưa điền đầy đủ thông tin');
+    //             $("#validateBlock").show();
+    //             window.scrollTo(0, 0);
+    //             return;
+    //         }
+    //     }
+    //     $("#submitButton").show();
+    //     $("#step2").show();
+    //     $("#term").show();
+    //     $("#nextButton").hide();
+    //     $("#step1").hide();
+    // }
     function next(){
-        if(fbObj === null && gObj === null)
-        {
-            var name = $("#fullname").val();
-            var dob = $("#dob").val();
-            if(name.length === 0 || dob.length === 0 || GENDER === undefined)
-            {
-                $("#validateMessage").text('Bạn chưa điền đầy đủ thông tin');
-                $("#validateBlock").show();
-                window.scrollTo(0, 0);
-                return;
-            }
-        }
-        $("#submitButton").show();
-        $("#step2").show();
-        $("#term").show();
-        $("#nextButton").hide();
-        $("#step1").hide();
-    }
-    function register(){
-        $("#errorBlock").hide();
+        var img = document.getElementById('promotion-img'); 
+        // var width = img.clientWidth;
+        var height = img.clientHeight;
 
         var phoneNumber = validatePhone();
         if(phoneNumber === false)
         {
-            $("#errorMessage").text('Số điện thoại không hợp lệ');
-            $("#errorBlock").show();
-            window.scrollTo(0, 0);
+            $("#validateMessage").text('Số điện thoại không hợp lệ');
+            $("#validateBlock").show();
+            window.scrollTo(0, height);
             return;
         }
-        var infoObj = {
-                        first_name: $("#given_name").val(), 
-                        last_name: $("#family_name").val(), 
-                        gender: GENDER,
-                        email: $("#email").val(), 
-                        phone: $("#phone").val(), 
-                        utm_source: 'posm', 
-                        send_sms: 'true',
-                        fb_id: FB_ID,
-                        fb:JSON.stringify(fbObj),
-                        gg_id: GG_ID, 
-                        gg: JSON.stringify(gObj)
-                    };
-        // console.log(infoObj);
 
+        var infoObj = {
+                            first_name: $("#given_name").val(), 
+                            last_name: $("#family_name").val(), 
+                            gender: GENDER,
+                            email: $("#email").val(), 
+                            phone: phoneNumber, 
+                            utm_source: 'posm', 
+                            send_sms: 'true',
+                            fb_id: FB_ID,
+                            fb:JSON.stringify(fbObj),
+                            gg_id: GG_ID, 
+                            gg: JSON.stringify(gObj)
+                        };
+
+        console.log(infoObj);
+
+        if(fbObj === null && gObj === null)
+        {
+            if(infoObj.first_name.length === 0 || infoObj.last_name.length === 0 || infoObj.email.length === 0 || infoObj.phone.length === 0 || infoObj.gender === undefined)
+            {
+                $("#validateMessage").text('Bạn chưa điền đầy đủ thông tin');
+                $("#validateBlock").show();
+                window.scrollTo(0, height);
+                return;
+            }
+            register(infoObj);
+        }
+        else            
+            register(infoObj);
+    }
+
+    function register (infoObj) {
         $.post("/user/create",
                     { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: infoObj.gender, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
             .done(function(data) {
@@ -344,6 +368,11 @@
                 {
                     setCookie("user_id", data.userId, 365);
                     // window.location.replace(redirect_url);
+
+                    $("#submitButton").hide();
+                    $("#step2").show();
+                    $("#term").show();
+                    $("#step1").hide();
                 }
             }).fail(function(data)
             {
@@ -353,6 +382,7 @@
                 window.scrollTo(0, 0);
             });
     }
+
     function connectFacebook() {
         manualLogin = true;
         auth.login('facebook',{
