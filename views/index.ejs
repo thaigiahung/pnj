@@ -129,8 +129,7 @@
             </div>
             <!-- <div id="nextButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="circle-text"><div>Tiếp tục</div></div> -->
             <div id="term" class="copy-right">
-                <p>By clicking 'SUBMIT' you are indicating that you've read
-                    and agree to the <a href="http://infory.vn/tos/">INFORY terms</a>
+                <p>Khi nhấn nút "Đăng ký", bạn đã đồng ý với <a href="http://infory.vn/tos/">các điều khoản của Infory</a>
                 </p>
             </div>
             <div id="submitButton" onclick="next();" style="margin: 10px 10px;cursor: pointer;" class="circle-text"><div>Đăng ký</div></div>
@@ -348,21 +347,27 @@
                 window.scrollTo(0, height);
                 return;
             }
-            register(infoObj);
+            register(infoObj, height);
         }
         else            
-            register(infoObj);
+            register(infoObj, height);
     }
 
-    function register (infoObj) {
+    function register (infoObj, height) {
         $.post("/user/create",
                     { first_name: infoObj.first_name, last_name: infoObj.last_name, gender: infoObj.gender, email: infoObj.email, phone: infoObj.phone, utm_source: 'posm', send_sms: 'true', fb_id: infoObj.fb_id,fb: infoObj.fb, gg_id: infoObj.gg_id, gg: infoObj.gg})
-            .done(function(data) {
+            .done(function(data) {console.log(data);
                 if (data.error !== undefined)
                 {
-                    $("#errorMessage").text(data.error);
-                    $("#errorBlock").show();
-                    window.scrollTo(0, 0);
+                    $("#validateMessage").text(data.error);
+                    $("#validateBlock").show();
+                    window.scrollTo(0, height);
+                }
+                else if(data.status === 0)
+                {
+                    $("#validateMessage").text(data.message);
+                    $("#validateBlock").show();
+                    window.scrollTo(0, height);
                 }
                 else
                 {
