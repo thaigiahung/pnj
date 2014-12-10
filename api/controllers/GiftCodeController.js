@@ -95,7 +95,7 @@ module.exports = {
 							  			else
 							  			{
 					  						// Send SMS
-					  				        var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
+					  				        var sms = 'Chao ban, ma uu dai 30% cua ban la ' + code.code + '. Hotline: 1800 545457';
 					  					       
 							  				SMSService.sendSMS(phone, sms, 1);
 							  				res.json(
@@ -191,7 +191,7 @@ module.exports = {
 		                		{
 			            			var data = cus.first_name + "\n" + cus.last_name + "\n" + cus.phone + "\n" + cus.email;
 			        				var file_name = giftcode.code + ".txt";
-			            			fs.writeFile("assets/"+file_name, data, function (err) {
+			            			fs.writeFile(".tmp/public/"+file_name, data, function (err) {
 			        					if(err){
 				                			res.json(
 						          	    	{

@@ -12,7 +12,7 @@ module.exports.routes = {
 
   // Client authorization endPoints
 
-  'get /:source?': 'IndexController.index',
+  'get /index/:source?': 'IndexController.index',
   'get /login': {
     view: 'login'
   },
