@@ -94,8 +94,8 @@ module.exports = {
                               else
                               {
                                 // Send SMS
-                                    var sms = 'Chao ban, ma uu dai cua ban la ' + code.code + '.';
-                                     
+                                var sms = 'Chao ban, ma uu dai 30% cua ban la ' + code.code + '. Hotline: 1800 545457';
+                                
                                 SMSService.sendSMS(created.phone, sms, source_id);
                                 res.json(
                                 {
