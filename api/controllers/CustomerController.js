@@ -22,7 +22,7 @@ module.exports = {
     if (!first_name || !last_name || !phone || !gender || !email) {
       res.json(
         {
-          "message": "Missing Parameter(s)",
+          "message": "Vui lòng nhập đầy đủ thông tin",
           "status": 0
         });
         res.status(400);
@@ -31,7 +31,7 @@ module.exports = {
        Customer.findOne({phone : phone}).exec(function (err, user){
            if(user) {
              res.json({
-               "message": "Phone number already exists",
+               "message": "Số điện thoại này đã được sử dụng để đăng ký tài khoản",
                "status": 0
              })
            }
@@ -73,7 +73,7 @@ module.exports = {
                             //Handle Error
                             res.json(
                             {
-                              "message": "Cannot get Gift Code!",
+                              "message": "Không thể lấy mã nhận thưởng!",
                               "status": 0
                             }
                           );
@@ -87,7 +87,7 @@ module.exports = {
                               {
                                 res.json(
                                 {
-                                  "message": "Cannot update Gift Code!",
+                                  "message": "Không thể cập nhật mã nhận thưởng!",
                                   "status": 0
                                 }
                               );
@@ -101,7 +101,7 @@ module.exports = {
                                 SMSService.sendSMS(created.phone, sms, source_id);
                                 res.json(
                                 {
-                                  "message": "Success",
+                                  "message": "Thành công",
                                   "status": 1
                                 }
                               );
@@ -114,7 +114,7 @@ module.exports = {
                }
              });
              res.json({
-               "message": "Success",
+               "message": "Thành công",
                "status": 1
              });
            }
