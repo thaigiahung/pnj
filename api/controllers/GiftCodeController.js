@@ -95,7 +95,7 @@ module.exports = {
 							  			else
 							  			{
 					  						// Send SMS
-					  				        var sms = 'Chao ban, ma uu dai 30% cua ban la ' + code.code + '. Hotline: 1800 545457';
+					  				        var sms = "PNJSILVER: Code - "+ code.code +", uu dai 30% cho 1 san pham trang suc PNJSILVER tu 12/12/2014 - 04/01/2015. Hotline:1800 545457";
 					  					       
 							  				SMSService.sendSMS(phone, sms, 1);
 							  				res.json(
