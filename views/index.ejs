@@ -138,7 +138,7 @@
         </div>
         <div id="step2">
             <div id="profileBlock" class="profile">
-                <img id="profileImage"/>
+                <img id="profileImage" src="/images/ava_boder.png"/>
                 <h4 style="text-align:center;" id="profileName"></h4>
             </div>
             <div align="center" id="errorBlock"><h2 id="errorMessage" style="color: red;"></h2></div>
@@ -221,7 +221,7 @@
                 updateGender(1);
             else
                 updateGender(0);*/
-            $("#profileImage").attr("src", fbObj.picture.data.url.replace("sz=50", "sz=100"));
+            // $("#profileImage").attr("src", fbObj.picture.data.url.replace("sz=50", "sz=100"));
             $("#profileName").text(fbObj.name);
             // $("#socialConnectBlock").hide();
             $("#profileBlock").show();
@@ -425,7 +425,7 @@
                     updateGender(1);
                 else
                     updateGender(0);*/
-                $("#profileImage").attr("src", gObj.image.url.replace("sz=50", "sz=100"));
+                // $("#profileImage").attr("src", gObj.image.url.replace("sz=50", "sz=100"));
                 $("#profileName").text(gObj.displayName);
                 // $("#socialConnectBlock").hide();
                 $("#profileBlock").show();
