@@ -517,11 +517,11 @@ label {
 
 .btn-register {
   float: right;
-  background-image: -webkit-linear-gradient(top, #E93CB2,#AA0F8B);
-  background-image: -moz-linear-gradient(top, #E93CB2,#AA0F8B);
-  background-image: -ms-linear-gradient(top, #E93CB2,#AA0F8B);
-  background-image: -o-linear-gradient(top, #E93CB2,#AA0F8B);
-  background-image: linear-gradient(to bottom, #E93CB2,#AA0F8B);
+  background-image: -webkit-linear-gradient(top, #A7228B,#A7228B);
+  background-image: -moz-linear-gradient(top, #A7228B,#A7228B);
+  background-image: -ms-linear-gradient(top, #A7228B,#A7228B);
+  background-image: -o-linear-gradient(top, #A7228B,#A7228B);
+  background-image: linear-gradient(to bottom, #A7228B,#A7228B);
   -webkit-border-radius: 10;
   -moz-border-radius: 10;
   border-radius: 10px;
