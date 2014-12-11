@@ -517,7 +517,6 @@ label {
 
 .btn-register {
   float: right;
-  background: #f5cfff;
   background-image: -webkit-linear-gradient(top, #E93CB2,#AA0F8B);
   background-image: -moz-linear-gradient(top, #E93CB2,#AA0F8B);
   background-image: -ms-linear-gradient(top, #E93CB2,#AA0F8B);
