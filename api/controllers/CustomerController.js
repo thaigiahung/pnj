@@ -26,11 +26,12 @@ module.exports = {
         });
         res.status(400);
     }
-    else {
-       Customer.findOne({phone : phone}).exec(function (err, user){
-           if(user) {
+    else {console.log(phone);
+       Customer.find({phone : phone}).exec(function (err, user){
+        console.log(user);
+           if(user.length >= 3) {
              res.json({
-               "message": "Số điện thoại này đã được sử dụng để đăng ký tài khoản",
+               "message": "Mỗi số điện thoại chỉ được nhận thưởng 3 lần!",
                "status": 0
              })
            }

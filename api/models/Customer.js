@@ -18,8 +18,7 @@ module.exports = {
 
     phone: {
       type : 'string',
-      required: true,
-      unique: true
+      required: true
       },
 
     email: {
