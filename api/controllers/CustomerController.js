@@ -5,6 +5,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+var mixpanel = sails.config.mixpanel;
 module.exports = {
   create: function(req, res){
     var first_name = req.param('first_name');
@@ -26,16 +27,15 @@ module.exports = {
         });
         res.status(400);
     }
-    else {console.log(phone);
-       Customer.find({phone : phone}).exec(function (err, user){
-        console.log(user);
+    else {      
+       Customer.find({phone : phone}).exec(function (err, user){ 
            if(user.length >= 3) {
              res.json({
                "message": "Mỗi số điện thoại chỉ được nhận thưởng 3 lần!",
                "status": 0
              })
            }
-           else {
+           else {            
              Customer.create({
                first_name : first_name,
                last_name : last_name,
@@ -44,8 +44,33 @@ module.exports = {
              }).exec(function(err,created){
                if(err) {
                  //Handle Error
+                 res.json({
+                   "message": "Không thể tạo tài khoản!",
+                   "status": 0
+                 })
                }
                else {
+                  //Save user info in Mixpanel DB
+                  mixpanel.people.set(created.id, {
+                    $name: created.last_name + " " + created.first_name,
+                    $created: new Date().toISOString(),
+                    $email: created.email,
+                    $phone: created.phone,
+                    fbId: fb_id,
+                    gId: gg_id
+                  });
+
+                  //Track event Register
+                  mixpanel.track('Register',{
+                    "id": created.id,
+                    "name": created.last_name + " " + created.first_name,
+                    "email": created.email,
+                    "phone": created.phone,
+                    "Facebook id": fb_id,
+                    "Google id": gg_id,
+                    "utm source": utm
+                  });
+
                  if(fb) {
                    Customer.update({phone:phone},{fb:fb}).exec(function(err,updated){});
                  }
@@ -58,11 +83,15 @@ module.exports = {
                  if(gg_id) {
                    Customer.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
                  }
+
+
+                  var bool_send_sms = false;
                  if(send_sms === "true")
                  {
+                    bool_send_sms = true;
                     Source.findOne({utm : utm}).exec(function (err, matchedSource){
                       var source_id;
-                      if(err || matchedSource.length == 0) 
+                      if(typeof matchUser == "undefined" || err || matchedSource.length == 0) 
                         source_id = 2;
                       else
                         source_id = matchedSource.id;
@@ -110,6 +139,10 @@ module.exports = {
                         });
                     });
                  }
+                 //Track event Issue Gift Code
+                 mixpanel.track('Issue Gift Code',{
+                  "send SMS": bool_send_sms
+                 });
                }
              });
              res.json({

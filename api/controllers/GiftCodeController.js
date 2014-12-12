@@ -7,6 +7,7 @@
 
 var fs = require('fs');
 var file_path = 'activated_code/';
+var mixpanel = sails.config.mixpanel;
 
 function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -189,6 +190,16 @@ module.exports = {
 		                		}
 		                		else
 		                		{
+		                			//Track event Register
+		                			mixpanel.track('Active Gift Code',{
+		                			  "id": cus.id,
+		                			  "name": cus.last_name + " " + cus.first_name,
+		                			  "email": cus.email,
+		                			  "phone": cus.phone,
+		                			  "Facebook id": cus.fb_id,
+		                			  "Google id": cus.gg_id
+		                			});
+
 			            			var data = cus.first_name + "\n" + cus.last_name + "\n" + cus.phone + "\n" + cus.email;
 			        				var file_name = giftcode.code + ".txt";
 			            			fs.writeFile(".tmp/public/"+file_name, data, function (err) {
