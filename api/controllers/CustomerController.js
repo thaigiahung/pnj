@@ -97,12 +97,8 @@ module.exports = {
                  if(send_sms === "true")
                  {
                     bool_send_sms = true;
-                    console.log(utm);
                     Source.findOne({utm : utm}).exec(function (err, matchedSource){
                       var source_id;
-                      console.log(typeof matchedSource);
-                      console.log(err);
-                      console.log(matchedSource.length);
                       if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) 
                         source_id = 2;
                       else
