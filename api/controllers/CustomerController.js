@@ -60,16 +60,24 @@ module.exports = {
                     gId: gg_id
                   });
 
-                  //Track event Register
-                  mixpanel.track('Register',{
-                    "id": created.id,
-                    "name": created.last_name + " " + created.first_name,
-                    "email": created.email,
-                    "phone": created.phone,
-                    "Facebook id": fb_id,
-                    "Google id": gg_id,
-                    "utm source": utm
-                  });
+                  Source.findOne({utm : utm}).exec(function (err, matchedSource){
+                    var source_name;
+                    if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) 
+                      source_name = "Other";
+                    else
+                      source_name = matchedSource.name;
+
+                    //Track event Register
+                    mixpanel.track('Register',{
+                      "id": created.id,
+                      "name": created.last_name + " " + created.first_name,
+                      "email": created.email,
+                      "phone": created.phone,
+                      "Facebook id": fb_id,
+                      "Google id": gg_id,
+                      "utm source": source_name
+                    });
+                  })
 
                  if(fb) {
                    Customer.update({phone:phone},{fb:fb}).exec(function(err,updated){});
@@ -89,9 +97,13 @@ module.exports = {
                  if(send_sms === "true")
                  {
                     bool_send_sms = true;
+                    console.log(utm);
                     Source.findOne({utm : utm}).exec(function (err, matchedSource){
                       var source_id;
-                      if(typeof matchUser == "undefined" || err || matchedSource.length == 0) 
+                      console.log(typeof matchedSource);
+                      console.log(err);
+                      console.log(matchedSource.length);
+                      if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) 
                         source_id = 2;
                       else
                         source_id = matchedSource.id;
