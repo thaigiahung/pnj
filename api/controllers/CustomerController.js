@@ -65,7 +65,7 @@ module.exports = {
                     if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) 
                       source_name = "Other";
                     else
-                      source_name = matchedSource.name;
+                      source_name = matchedSource.utm;
 
                     //Track event Register
                     mixpanel.track('Register',{
