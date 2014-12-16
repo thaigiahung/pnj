@@ -50,22 +50,30 @@ module.exports = {
                  })
                }
                else {
-                  //Save user info in Mixpanel DB
-                  mixpanel.people.set(created.id, {
-                    $name: created.last_name + " " + created.first_name,
-                    $created: new Date().toISOString(),
-                    $email: created.email,
-                    $phone: created.phone,
-                    fbId: fb_id,
-                    gId: gg_id
-                  });
+                  console.log(user);
+                  if(user.length === 0)
+                  {
+                    //Save user info in Mixpanel DB
+                    mixpanel.people.set(created.id, {
+                      $name: created.last_name + " " + created.first_name,
+                      $created: new Date().toISOString(),
+                      $email: created.email,
+                      $phone: created.phone,
+                      fbId: fb_id,
+                      gId: gg_id
+                    });
+                  }
 
                   Source.findOne({utm : utm}).exec(function (err, matchedSource){
-                    var source_name;
-                    if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) 
-                      source_name = "Other";
-                    else
+                    var source_id, source_name;
+                    if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) {
+                      source_name = "other";
+                      source_id = 2;
+                    }                       
+                    else {
                       source_name = matchedSource.utm;
+                      source_id = matchedSource.id;
+                    }                      
 
                     //Track event Register
                     mixpanel.track('Register',{
@@ -77,80 +85,73 @@ module.exports = {
                       "Google id": gg_id,
                       "utm source": source_name
                     });
-                  })
-
-                 if(fb) {
-                   Customer.update({phone:phone},{fb:fb}).exec(function(err,updated){});
-                 }
-                 if(fb_id) {
-                   Customer.update({phone:phone},{fb_id:fb_id}).exec(function(err,updated){});
-                 }
-                 if(gg) {
-                   Customer.update({phone:phone},{gg:gg}).exec(function(err,updated){});
-                 }
-                 if(gg_id) {
-                   Customer.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
-                 }
+                    if(fb) {
+                      Customer.update({phone:phone},{fb:fb}).exec(function(err,updated){});
+                    }
+                    if(fb_id) {
+                      Customer.update({phone:phone},{fb_id:fb_id}).exec(function(err,updated){});
+                    }
+                    if(gg) {
+                      Customer.update({phone:phone},{gg:gg}).exec(function(err,updated){});
+                    }
+                    if(gg_id) {
+                      Customer.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
+                    }
 
 
-                  var bool_send_sms = false;
-                 if(send_sms === "true")
-                 {
-                    bool_send_sms = true;
-                    Source.findOne({utm : utm}).exec(function (err, matchedSource){
-                      var source_id;
-                      if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) 
-                        source_id = 2;
-                      else
-                        source_id = matchedSource.id;
-                      //Lấy 1 Gift Code
-                      GiftCode.findOne({status: 0}).exec(function(err, code){
-                              if(err) {
-                            //Handle Error
-                            res.json(
-                            {
-                              "message": "Không thể lấy mã nhận thưởng!",
-                              "status": 0
-                            }
-                          );
-                            res.status(400);
-                          }
-                          else
-                          {
-                            //Set user_id và source cho Gift Code
-                            GiftCode.update({id:code.id},{customer: created.id, status:1, source:source_id}).exec(function(err,updatedCode){
-                              if(err)
-                              {
-                                res.json(
-                                {
-                                  "message": "Không thể cập nhật mã nhận thưởng!",
-                                  "status": 0
-                                }
-                              );
-                                res.status(400);
-                              }
-                              else
-                              {
-                                // Send SMS
-                                var sms = "PNJSILVER: Code - "+ code.code +", uu dai 30% cho 1 san pham trang suc PNJSILVER tu 12/12/2014 - 04/01/2015. Hotline:1800 545457";
-                                
-                                SMSService.sendSMS(created.phone, sms, source_id);
-                                res.json(
-                                {
-                                  "message": "Thành công",
-                                  "status": 1
-                                }
-                              );
-                              }
-                            });           
-                          }
-                        });
+                     var bool_send_sms = false;
+                    if(send_sms === "true")
+                    {
+                       bool_send_sms = true;
+                       //Lấy 1 Gift Code
+                       GiftCode.findOne({status: 0}).exec(function(err, code){
+                           if(err) {
+                         //Handle Error
+                         res.json(
+                         {
+                           "message": "Không thể lấy mã nhận thưởng!",
+                           "status": 0
+                         }
+                       );
+                         res.status(400);
+                       }
+                       else
+                       {
+                         //Set user_id và source cho Gift Code
+                         GiftCode.update({id:code.id},{customer: created.id, status:1, source:source_id}).exec(function(err,updatedCode){
+                           if(err)
+                           {
+                             res.json(
+                             {
+                               "message": "Không thể cập nhật mã nhận thưởng!",
+                               "status": 0
+                             }
+                           );
+                             res.status(400);
+                           }
+                           else
+                           {
+                             // Send SMS
+                             var sms = "PNJSILVER: Code - "+ code.code +", uu dai 30% cho 1 san pham trang suc PNJSILVER tu 12/12/2014 - 04/01/2015. Hotline:1800 545457";
+                             
+                             SMSService.sendSMS(created.phone, sms, source_id);
+                             res.json(
+                             {
+                               "message": "Thành công",
+                               "status": 1
+                             }
+                           );
+                           }
+                         });           
+                       }
+                     });
+                    }
+                    //Track event Issue Gift Code
+                    mixpanel.track('Issue Gift Code',{
+                     "send SMS": bool_send_sms,
+                     "utm source": source_name
                     });
-                 }
-                 //Track event Issue Gift Code
-                 mixpanel.track('Issue Gift Code',{
-                  "send SMS": bool_send_sms
-                 });
+                  })                 
                }
              });
              res.json({

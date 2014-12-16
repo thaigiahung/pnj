@@ -190,15 +190,27 @@ module.exports = {
 		                		}
 		                		else
 		                		{
-		                			//Track event Register
-		                			mixpanel.track('Active Gift Code',{
-		                			  "id": cus.id,
-		                			  "name": cus.last_name + " " + cus.first_name,
-		                			  "email": cus.email,
-		                			  "phone": cus.phone,
-		                			  "Facebook id": cus.fb_id,
-		                			  "Google id": cus.gg_id
+		                			Source.findOne({id : giftcode.source}).exec(function (err, matchedSource){
+		                			  var source_name;
+		                			  if(typeof matchedSource == "undefined" || err || matchedSource.length == 0) {
+		                			    source_name = "other";
+		                			  }                       
+		                			  else {
+		                			    source_name = matchedSource.utm;
+		                			  }
+
+			                			//Track event Active Gift Code
+			                			mixpanel.track('Active Gift Code',{
+			                			  "id": cus.id,
+			                			  "name": cus.last_name + " " + cus.first_name,
+			                			  "email": cus.email,
+			                			  "phone": cus.phone,
+			                			  "Facebook id": cus.fb_id,
+			                			  "Google id": cus.gg_id,
+		                			      "utm source": source_name
+			                			});
 		                			});
+		                			
 
 			            			var data = cus.first_name + "\n" + cus.last_name + "\n" + cus.phone + "\n" + cus.email;
 			        				var file_name = giftcode.code + ".txt";
