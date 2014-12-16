@@ -50,7 +50,6 @@ module.exports = {
                  })
                }
                else {
-                  console.log(user);
                   if(user.length === 0)
                   {
                     //Save user info in Mixpanel DB
