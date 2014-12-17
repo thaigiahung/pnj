@@ -30,6 +30,7 @@ module.exports.policies = {
         'generatecode' : 'oauthBearer',
         'issue' : 'oauthBearer',
         'active' : true,
+        'resend' : true,
         'check' : true
     },
     Source: {

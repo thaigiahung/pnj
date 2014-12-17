@@ -121,6 +121,59 @@ module.exports = {
 		    	}
 		    });   
   		}
+	},
+
+	resend: function(req,res) {
+		var phone = req.param('phone');
+		if (!phone) {
+			res.json(
+			 	{
+			 		"message": "Missing Parameter",
+			 		"status": 0
+			 	}
+			 	);
+	     	res.status(400);
+  		}
+  		else
+  		{
+			Customer.findOne({phone:phone}).exec(function(err, matchUser){
+		        if(typeof matchUser == "undefined" || matchUser.length == 0) //Chưa có user này => tạo
+		    	{
+  					res.json(
+					 	{
+					 		"message": "User not exist!",
+					 		"status": 0
+					 	}
+				 	);
+		    	}
+		    	else
+		    	{
+					GiftCode.findOne({customer: matchUser.id}).exec(function(err, code){
+			            if(err) {
+		  					//Handle Error
+		  					res.json(
+							 	{
+							 		"message": "Cannot get Gift Code!",
+							 		"status": 0
+							 	}
+						 	);
+		  				}
+		  				else
+		  				{
+	  						// Send SMS
+	  				        var sms = "PNJSILVER: Code - "+ code.code +", uu dai 30% cho 1 san pham trang suc PNJSILVER tu 12/12/2014 - 04/01/2015. Hotline:1800 545457";
+	  					    SMSService.sendSMS(matchUser.id,matchUser.phone, sms, 9);
+			  				res.json(
+							 	{
+							 		"message": "Success",
+							 		"status": 1
+							 	}
+						 	);	  			
+		  				}
+				    });
+		    	}
+		    });   
+  		}
 	},	
 
 	active: function(req,res) {
