@@ -133,13 +133,13 @@ module.exports = {
                              // Send SMS
                              var sms = "PNJSILVER: Code - "+ code.code +", uu dai 30% cho 1 san pham trang suc PNJSILVER tu 12/12/2014 - 04/01/2015. Hotline:1800 545457";
                              
-                             SMSService.sendSMS(created.phone, sms, source_id);
+                             SMSService.sendSMS(created.id,created.phone, sms, source_id);                              
                              res.json(
-                             {
-                               "message": "Thành công",
-                               "status": 1
-                             }
-                           );
+                                  {
+                                    "message": "Thành công",
+                                    "status": 1
+                                  }
+                                );                           
                            }
                          });           
                        }
