@@ -31,6 +31,7 @@ module.exports.policies = {
         'issue' : 'oauthBearer',
         'active' : true,
         'resend' : true,
+        'reissue' : true,
         'check' : true
     },
     Source: {

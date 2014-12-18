@@ -174,6 +174,74 @@ module.exports = {
 		    	}
 		    });   
   		}
+	},
+
+	reissue: function(req,res) {
+		var phone = req.param('phone');
+		var source_id = req.param('source_id');
+	  	if (!phone || !source_id) {
+		    res.json(
+		      {
+		        "message": "Vui lòng nhập đầy đủ thông tin",
+		        "status": 0
+		      });
+		  	}
+	  	else {  
+			Customer.findOne({phone:phone}).exec(function(err, matchUser){
+		        if(typeof matchUser == "undefined" || matchUser.length == 0) //Chưa có user này => tạo
+		    	{
+  					res.json(
+					 	{
+					 		"message": "User not exist!",
+					 		"status": 0
+					 	}
+				 	);
+		    	}
+		    	else
+		    	{
+		    		//Lấy 1 Gift Code
+		    		GiftCode.findOne({status: 0}).exec(function(err, code){
+		    		    if(err) {
+			    		    //Handle Error
+			    		    res.json(
+				    		    {
+				    		      "message": "Không thể lấy mã nhận thưởng!",
+				    		      "status": 0
+				    		    }
+				    		);
+		    		  	}
+		    		  	else
+		    		  	{
+			    		    //Set user_id và source cho Gift Code
+			    		    GiftCode.update({id:code.id},{customer: matchUser.id, status:1, source:source_id}).exec(function(err,updatedCode){
+			    		      	if(err)
+			    		      	{
+				    		        res.json(
+					    		        {
+					    		          "message": "Không thể cập nhật mã nhận thưởng!",
+					    		          "status": 0
+					    		        }
+				    		      	);
+			    		      	}
+			    		      	else
+			    		      	{
+				    		        // Send SMS
+				    		        var sms = "PNJSILVER: Code - "+ code.code +", uu dai 30% cho 1 san pham trang suc PNJSILVER tu 12/12/2014 - 04/01/2015. Hotline:1800 545457";
+				    		        
+				    		        SMSService.sendSMS(matchUser.id,matchUser.phone, sms, source_id);                              
+				    		        res.json(
+				    		             {
+				    		               "message": "Thành công",
+				    		               "status": 1
+				    		             }
+			    		           	);                           
+			    		      	}
+			    		    });           
+			    		}
+		    		});
+		    	}
+	    	});
+		}
 	},	
 
 	active: function(req,res) {

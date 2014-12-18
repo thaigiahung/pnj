@@ -45,6 +45,10 @@ module.exports.routes = {
     controller: 'GiftCodeController',
     action: 'resend'
   },
+  'POST /gift_code/reissue': {
+    controller: 'GiftCodeController',
+    action: 'reissue'
+  },
   'POST /gift_code/generate': {
     controller: 'GiftCodeController',
     action: 'generatecode'
