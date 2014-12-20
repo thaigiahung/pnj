@@ -7,6 +7,12 @@
 
 var mixpanel = sails.config.mixpanel;
 module.exports = {
+  sendSMS: function(req, res) {
+    console.log(req.params);
+
+    // SMSService.sendSMS(created.id,created.phone, sms, source_id);
+  },
+
   create: function(req, res){
     var first_name = req.param('first_name');
     var last_name = req.param('last_name');
@@ -29,13 +35,12 @@ module.exports = {
     }
     else {      
        Customer.find({phone : phone}).exec(function (err, user){ 
-           if(user.length >= 3) {
+           if( user && user.length >= 3) {
              res.json({
                "message": "Mỗi số điện thoại chỉ được nhận thưởng 3 lần!",
                "status": 0
              })
-           }
-           else {            
+           } else {            
              Customer.create({
                first_name : first_name,
                last_name : last_name,
@@ -84,6 +89,7 @@ module.exports = {
                       "Google id": gg_id,
                       "utm source": source_name
                     });
+
                     if(fb) {
                       Customer.update({phone:phone},{fb:fb}).exec(function(err,updated){});
                     }
@@ -153,6 +159,7 @@ module.exports = {
                   })                 
                }
              });
+             
              res.json({
                "message": "Thành công",
                "status": 1
