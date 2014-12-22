@@ -91,16 +91,16 @@ module.exports = {
                     });
 
                     if(fb) {
-                      Customer.update({phone:phone},{fb:fb}).exec(function(err,updated){});
+                      Customer.update({id:created.id},{fb:fb}).exec(function(err,updated){});
                     }
                     if(fb_id) {
-                      Customer.update({phone:phone},{fb_id:fb_id}).exec(function(err,updated){});
+                      Customer.update({id:created.id},{fb_id:fb_id}).exec(function(err,updated){});
                     }
                     if(gg) {
-                      Customer.update({phone:phone},{gg:gg}).exec(function(err,updated){});
+                      Customer.update({id:created.id},{gg:gg}).exec(function(err,updated){});
                     }
                     if(gg_id) {
-                      Customer.update({phone:phone},{gg_id:gg_id}).exec(function(err,updated){});
+                      Customer.update({id:created.id},{gg_id:gg_id}).exec(function(err,updated){});
                     }
 
 
