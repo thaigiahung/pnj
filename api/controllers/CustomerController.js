@@ -183,8 +183,11 @@ module.exports = {
             // Send SMS
             var sms = "Ban van chua su dung ma uu dai 30% ? Hay tan dung ngay cho GIANG SINH nay, dung bo lo co hoi duy nhat trong nam ma PNJSilver danh cho ban nhe ! Hotline 1800 545457";
             
-            SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9); 
-            console.log(matchedCustomer.id);
+            TrackingRemind.create({
+               customer : matchedCustomer.id
+             }).exec(function(err,created){});
+
+            SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9);
           });
         }
       }      
