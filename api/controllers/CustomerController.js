@@ -173,23 +173,95 @@ module.exports = {
   {
     var start = req.param('start');
     var end = req.param('end');
+    var type = req.param('type');
 
-    GiftCode.find({id : { '>=': start, '<=': end}, status: 1}).exec(function (err, matchedGiftCode){    
-      if(matchedGiftCode && matchedGiftCode.length > 0)
-      {
-        matchedGiftCode.forEach(function(code){
-          Customer.findOne({id : code.customer}).exec(function (err, matchedCustomer){
-            // Send SMS
-            var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
-            TrackingRemind.create({
-               customer : matchedCustomer.id
-             }).exec(function(err,created){});
-            SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9);
+    if(type == 1) //Vina
+    {
+      GiftCode.find({id : { '>=': start, '<=': end}, status: 1}).exec(function (err, matchedGiftCode){    
+        if(matchedGiftCode && matchedGiftCode.length > 0)
+        {
+          matchedGiftCode.forEach(function(code){
+            Customer.findOne({id : code.customer}).exec(function (err, matchedCustomer){
+              var str_start = matchedCustomer.phone.substring(0,5);
+              var flag = false;
+              if(str_start.charAt(2) === "9")
+              {
+                if(str_start.charAt(3) === "1" || str_start.charAt(3) === "4")
+                  flag = true;
+              }
+              else if(str_start.charAt(2) === "1")
+              {
+                if(str_start.substring(3,5) === "23" || str_start.substring(3,5) === "24" || str_start.substring(3,5) === "25" || str_start.substring(3,5) === "27" || str_start.substring(3,5) === "29")
+                  flag = true;
+              }
+
+              if(flag === true)
+              {
+                // Send SMS
+                var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+                TrackingRemind.create({
+                   customer : matchedCustomer.id
+                 }).exec(function(err,created){});
+                SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9);
+              }              
+            });
           });
-        });
-      }      
-    });
+        }      
+      });
+    }
+    else if(type == 2) //Cach mang khac
+    {
+      GiftCode.find({id : { '>=': start, '<=': end}, status: 1}).exec(function (err, matchedGiftCode){    
+        if(matchedGiftCode && matchedGiftCode.length > 0)
+        {
+          matchedGiftCode.forEach(function(code){
+            Customer.findOne({id : code.customer}).exec(function (err, matchedCustomer){
+              var str_start = matchedCustomer.phone.substring(0,5);
+              var flag = false;
+              if(str_start.charAt(2) === "9")
+              {
+                if(str_start.charAt(3) !== "1" && str_start.charAt(3) !== "4")
+                  flag = true;
+              }
+              else if(str_start.charAt(2) === "1")
+              {
+                if(str_start.substring(3,5) !== "23" && str_start.substring(3,5) !== "24" && str_start.substring(3,5) !== "25" && str_start.substring(3,5) !== "27" && str_start.substring(3,5) !== "29")
+                  flag = true;
+              }
 
+              if(flag === true)
+              {
+                console.log(matchedCustomer.phone);
+                // Send SMS
+                var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+                TrackingRemind.create({
+                   customer : matchedCustomer.id
+                 }).exec(function(err,created){});
+                SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9);
+              }              
+            });
+          });
+        }      
+      });
+    }
+    else //All
+    {
+      GiftCode.find({id : { '>=': start, '<=': end}, status: 1}).exec(function (err, matchedGiftCode){    
+        if(matchedGiftCode && matchedGiftCode.length > 0)
+        {
+          matchedGiftCode.forEach(function(code){
+            Customer.findOne({id : code.customer}).exec(function (err, matchedCustomer){
+              // Send SMS
+              var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+              TrackingRemind.create({
+                 customer : matchedCustomer.id
+               }).exec(function(err,created){});
+              SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9);
+            });
+          });
+        }      
+      });
+    }
     return res.send("start: " + start + " end: "+end);
   },
 };
