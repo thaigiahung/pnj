@@ -36,6 +36,10 @@ module.exports.routes = {
     controller: 'customer',
     action: 'create'
   },
+  'POST /user/remind' : {
+    controller: 'customer',
+    action: 'remind'
+  },
 
   'POST /gift_code/issue': {
     controller: 'GiftCodeController',

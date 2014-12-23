@@ -167,6 +167,30 @@ module.exports = {
            }
          });
     }
-  }
+  },
+
+  remind: function(req,res)
+  {
+    var start = req.param('start');
+    var end = req.param('end');
+
+    GiftCode.find({id : { '>=': start }, id : { '<=': end }, status: 1}).exec(function (err, matchedGiftCode){
+      if(matchedGiftCode && matchedGiftCode.length > 0)
+      {
+        for(var i = 0; i < matchedGiftCode.length; i++)
+        {
+          Customer.findOne({id : matchedGiftCode[i].customer}).exec(function (err, matchedCustomer){
+            // Send SMS
+            var sms = "Ban van chua su dung ma uu dai 30% ? Hay tan dung ngay cho GIANG SINH nay, dung bo lo co hoi duy nhat trong nam ma PNJSilver danh cho ban nhe ! Hotline 1800 545457";
+            
+            SMSService.sendSMS(matchedCustomer.id,matchedCustomer.phone, sms, 9); 
+            console.log(matchedCustomer.id);
+          });
+        }
+      }      
+    });
+
+    return res.send("start: " + start + " end: "+end);
+  },
 };
 

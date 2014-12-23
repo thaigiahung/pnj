@@ -43,6 +43,7 @@ module.exports.policies = {
     Customer: {
         '*': false,
         'create': true,
+        'remind': true,
         'find': true
     }
 
