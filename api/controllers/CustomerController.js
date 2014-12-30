@@ -198,7 +198,8 @@ module.exports = {
               if(flag === true)
               {
                 // Send SMS
-                var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+                // var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+                var sms = "Hay su dung ma uu dai 30% (code: " + code.code + ") cua ban truoc 04/01/2015 de co CO HOI nhan TUI CANVAS THOI TRANG 230k khi mua hang nhe. Happy New Year! HL: 1800545457.";
                 TrackingRemind.create({
                    customer : matchedCustomer.id
                  }).exec(function(err,created){});
@@ -233,7 +234,8 @@ module.exports = {
               {
                 console.log(matchedCustomer.phone);
                 // Send SMS
-                var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+                // var sms = "Ban van chua su dung ma uu dai 30%:" + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+                var sms = "Hay su dung ma uu dai 30% (code: " + code.code + ") cua ban truoc 04/01/2015 de co CO HOI nhan TUI CANVAS THOI TRANG 230k khi mua hang nhe. Happy New Year! HL: 1800545457.";
                 TrackingRemind.create({
                    customer : matchedCustomer.id
                  }).exec(function(err,created){});
@@ -252,7 +254,8 @@ module.exports = {
           matchedGiftCode.forEach(function(code){
             Customer.findOne({id : code.customer}).exec(function (err, matchedCustomer){
               // Send SMS
-              var sms = "Ban van chua su dung ma uu dai 30%: " + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+              // var sms = "Ban van chua su dung ma uu dai 30%: " + code.code + "?Hay tan dung ngay cho GIANG SINH nay,dung bo lo co hoi duy nhat trong nam!Hotline 1800545457";
+              var sms = "Hay su dung ma uu dai 30% (code: " + code.code + ") cua ban truoc 04/01/2015 de co CO HOI nhan TUI CANVAS THOI TRANG 230k khi mua hang nhe. Happy New Year! HL: 1800545457.";
               TrackingRemind.create({
                  customer : matchedCustomer.id
                }).exec(function(err,created){});
